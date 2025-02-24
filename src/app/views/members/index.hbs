@@ -1,6 +1,14 @@
+{{!-- src/app/views/members/index.hbs --}}
 <h2>Danh sách thành viên</h2>
+
+{{#if members}}
 <ul>
-    <li>Thành viên 1</li>
-    <li>Thành viên 2</li>
-    <li>Thành viên 3</li>
+    {{#each members}}
+    <li>
+        <a href="/members/{{this.slug}}">{{this.name}}</a> - {{this.role}}
+    </li>
+    {{/each}}
 </ul>
+{{else}}
+<p>Không có thành viên nào.</p>
+{{/if}}

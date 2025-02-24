@@ -1,9 +1,9 @@
 // src/routes/home.js
 import express from 'express';
+import * as HomeController from '../app/controllers/HomeController.js'; // Import controller
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('home', { title: "Trang chủ" });
-});
+router.get('/', HomeController.home); // Sử dụng controller
 
-export default router; // Thêm dòng này
+export default router;

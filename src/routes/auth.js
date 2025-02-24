@@ -1,10 +1,10 @@
+// src/routes/auth.js
 import express from 'express';
-const router = express.Router();
-router.get('/login', (req, res) => {
-    res.render('auth/login', { title: 'Đăng nhập' });
-});
+import * as authController from '../app/controllers/AuthController.js'; // Import auth controller
 
-router.get('/register', (req, res) => {
-    res.render('auth/register', { title: 'Đăng ký' });
-});
+const router = express.Router();
+
+router.get('/login', authController.login); // Use the imported controller
+router.get('/register', authController.register);
+
 export default router;

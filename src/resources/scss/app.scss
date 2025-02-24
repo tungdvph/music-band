@@ -47,3 +47,34 @@ footer {
 h1 {
     color: purple
 }
+
+// src/resources/scss/app.scss
+// ... (các style khác của bạn)
+
+header {
+    // ... (các style khác cho header)
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: inline-block; // Các nút nằm trên cùng một hàng
+            margin-right: 10px; // Khoảng cách giữa các nút
+
+            a {
+                display: block; // Để padding hoạt động đúng
+                padding: 10px 15px;
+                background-color: #4CAF50; // Màu nền
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+
+                &:hover {
+                    background-color: #3e8e41; // Màu nền khi hover
+                }
+            }
+        }
+    }
+}

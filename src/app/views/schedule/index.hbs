@@ -1,2 +1,11 @@
-<h2>Lịch Trình</h2>
-<p>Thông tin tại đây</p>
+<h2>Lịch trình</h2>
+<ul>
+    {{#each schedules}}
+    <li>
+        {{this.venue}} - {{this.date}} - {{this.time}}
+        {{#if this.band}}
+        (với {{this.band.name}})
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>

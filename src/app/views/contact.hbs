@@ -1,2 +1,9 @@
 <h2>Liên hệ</h2>
-<p>Thông tin liên hệ band nhạc.</p>
+{{#each contacts}}
+<div>
+    <p><strong>Name:</strong> {{this.name}}</p>
+    <p><strong>Email:</strong> {{this.email}}</p>
+    <p><strong>Subject:</strong> {{this.subject}}</p>
+    <p><strong>Message:</strong> {{this.message}}</p>
+</div>
+{{/each}}

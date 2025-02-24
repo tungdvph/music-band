@@ -1,2 +1,8 @@
 <h2>Âm nhạc</h2>
-<p>Thông tin tại đây</p>
+<ul>
+    {{#each songs}}
+    <li>
+        <a href="/music/{{this.slug}}">{{this.title}}</a> - {{this.artist}}
+    </li>
+    {{/each}}
+</ul>

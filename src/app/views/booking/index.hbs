@@ -1,2 +1,11 @@
 <h2>Booking</h2>
-<p>Thông tin tại đây</p>
+{{#each bookings}}
+<div>
+    <p>Venue: {{this.venue}}</p>
+    <p>Date: {{this.date}}</p>
+    <p>Status: {{this.status}}</p>
+    {{#if this.band}}
+    <p>Band: {{this.band.name}}</p>
+    {{/if}}
+</div>
+{{/each}}

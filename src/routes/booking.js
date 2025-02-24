@@ -1,7 +1,9 @@
-//src/routes/booking.js
+// src/routes/booking.js
+
 import express from 'express';
 const router = express.Router();
-router.get('/', (req, res) => {
-    res.render('booking/index', { title: 'Đặt lịch' });
-});
+
+import * as BookingController from '../app/controllers/BookingController.js'
+router.get('/', BookingController.index);
+
 export default router;

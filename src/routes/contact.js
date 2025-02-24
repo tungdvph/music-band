@@ -1,8 +1,9 @@
-//src/routes/contact.js
-import express from 'express';
-const router = express.Router();
+// src/routes/contact.js
 
-router.get('/', (req, res) => {
-    res.render('contact', { title: 'Liên hệ' }); // Hiển thị view contact.hbs
-});
+import express from 'express';
+import * as ContactController from '../app/controllers/ContactController.js';
+
+const router = express.Router();
+router.get('/', ContactController.index);
+
 export default router;

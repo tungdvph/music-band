@@ -1,2 +1,72 @@
-html <h2>Bài hát</h2>
-<p>Slug: {{slug}}</p>
+{{!-- src/app/views/music/show.hbs --}}
+
+<div class="song-detail">
+    <h1>{{song.title}}</h1>
+
+    <p class="artist">
+        <strong>Artist:</strong>
+        {{!-- Kiểm tra xem artist có phải là ObjectId không (tức là có liên kết) --}}
+        {{#if (isObject song.artist)}}
+        <a href="/artists/{{song.artist.slug}}">{{song.artist.name}}</a>
+        {{else}}
+        {{song.artist}} {{!-- Nếu không phải ObjectId, hiển thị như chuỗi bình thường --}}
+        {{/if}}
+    </p>
+
+    {{#if song.audioUrl}}
+    <div class="audio-player">
+        <audio controls>
+            <source src="{{song.audioUrl}}" type="audio/mpeg"> {{!-- Bạn có thể thêm các type khác nếu cần --}}
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    {{/if}}
+
+    {{#if song.lyrics}}
+    <div class="lyrics">
+        <h2>Lyrics</h2>
+        <pre>{{song.lyrics}}</pre> {{!-- Sử dụng
+        <pre> để giữ nguyên định dạng của lời bài hát --}}
+        </div>
+    {{/if}}
+
+     {{#if song.createdAt}}
+        <p>Create at: {{formatDate song.createdAt}}</p>
+    {{/if}}
+
+    {{#if song.updatedAt}}
+      <p>Update at:  {{formatDate song.updatedAt}}</p>
+    {{/if}}
+</div>
+
+{{!-- Thêm một chút CSS để trang hiển thị đẹp hơn (tùy chọn) --}}
+<style>
+.song-detail {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.artist {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.audio-player {
+    margin-bottom: 20px;
+}
+
+.lyrics {
+    margin-bottom: 20px;
+}
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+</style>

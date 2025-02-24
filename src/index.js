@@ -3,13 +3,17 @@ import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import routes from './routes/index.js'; // Import routes
+import routes from './routes/index.js';
+import db from './config/db/index.js'; // Import module kết nối DB
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = 3000;
+
+// Kết nối database
+db.connect();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -23,8 +27,7 @@ app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'app', 'views'));
 
-// Sử dụng routes
-app.use('/', routes); // Sử dụng router chính
+app.use('/', routes);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
