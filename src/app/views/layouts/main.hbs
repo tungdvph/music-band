@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title> 1 {{!-- Placeholder cho title --}}
+    {{!-- Thêm link tới file CSS (nếu có) --}}
+    <link rel="stylesheet" href="/css/app.css">
+    {{!--
+    <link rel="stylesheet" href="/css/app.css"> --}}
+</head>
+
+<body>
+    {{> header}} {{!-- Chèn partial header --}}
+    {{{body}}} {{!-- Nơi nội dung của các view khác sẽ được chèn vào --}}
+    {{> footer}} {{!-- Chèn partial footer--}}
+</body>
+
+</html>

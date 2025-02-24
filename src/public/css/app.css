@@ -1,0 +1,44 @@
+body {
+  font-family: sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+}
+header h1 {
+  margin: 0;
+}
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+header nav ul li {
+  display: inline;
+  margin-right: 1rem;
+}
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+header nav ul li a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+h1 {
+  color: purple;
+}
+
+/*# sourceMappingURL=app.css.map */
