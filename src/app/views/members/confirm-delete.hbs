@@ -1,0 +1,12 @@
+{{!-- src/app/views/members/confirm-delete.hbs --}}
+
+<h2>Xác nhận xóa thành viên</h2>
+
+<p>Bạn có chắc chắn muốn xóa thành viên <strong>{{member.name}}</strong> ({{member.role}})?</p>
+<p>Hành động này không thể hoàn tác!</p>
+
+<form action="/members/{{member.slug}}?_method=DELETE" method="POST">
+    <button type="submit">Xóa</button>
+</form>
+
+<a href="/members/{{member.slug}}">Hủy</a>

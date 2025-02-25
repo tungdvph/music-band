@@ -1,7 +1,7 @@
 // src/app/models/Member.js
 
 import mongoose from 'mongoose';
-import slug from 'mongoose-slug-generator';
+import slug from 'mongoose-slug-updater';
 
 mongoose.plugin(slug);
 const Schema = mongoose.Schema;

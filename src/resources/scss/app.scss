@@ -78,3 +78,180 @@ header {
         }
     }
 }
+
+// src/resources/scss/app.scss
+
+// Variables (Tùy chỉnh màu sắc ở đây)
+$primary-color: #007bff; // Màu chủ đạo (ví dụ: xanh dương)
+$secondary-color: #6c757d; // Màu phụ (ví dụ: xám)
+$light-gray: #f8f9fa;
+$dark-gray: #343a40;
+$error-color: #dc3545;
+$success-color: #28a745;
+
+// Reset and basic styles
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: $light-gray;
+    color: $dark-gray;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem; // Khoảng cách dưới các tiêu đề
+}
+
+// Container (để căn giữa nội dung)
+.container {
+    width: 80%;
+    max-width: 800px; // Giới hạn độ rộng tối đa
+    margin: 2rem auto; // Căn giữa, có khoảng cách trên/dưới
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Đổ bóng nhẹ
+}
+
+// Form styles
+.form-group {
+    margin-bottom: 1.5rem; // Khoảng cách giữa các nhóm form
+
+    label {
+        display: block; // Hiển thị label trên một dòng riêng
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid $secondary-color;
+        border-radius: 4px;
+        box-sizing: border-box; // Quan trọng: Để width: 100% không làm phần tử tràn ra ngoài
+        font-size: 1rem;
+
+        &:focus {
+            outline: none; // Bỏ outline mặc định
+            border-color: $primary-color; // Đổi màu border khi focus
+            box-shadow: 0 0 5px rgba($primary-color, 0.5); // Đổ bóng nhẹ khi focus
+        }
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}
+
+// Button styles
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none; // Bỏ gạch chân cho thẻ <a>
+    transition: background-color 0.2s ease;
+
+    &.btn-primary {
+        background-color: $primary-color;
+        color: white;
+
+        &:hover {
+            background-color: darken($primary-color, 10%); // Làm tối màu khi hover
+        }
+    }
+
+    &.btn-secondary {
+        background-color: $secondary-color;
+        color: white;
+
+        &:hover {
+            background-color: darken($secondary-color, 10%);
+        }
+    }
+
+    &.btn-danger {
+        background-color: $error-color;
+        color: white;
+
+        &:hover {
+            background-color: darken($error-color, 10%);
+        }
+    }
+
+    &.btn-success {
+        background-color: $success-color;
+        color: white;
+
+        &:hover {
+            background-color: darken($success-color, 10%);
+        }
+    }
+
+    &.btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+
+        &:hover {
+            background-color: darken(#ffc107, 10%);
+        }
+    }
+
+    &.btn-sm {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.8rem;
+    }
+}
+
+.btn+.btn {
+    margin-left: 0.5rem; // Khoảng cách giữa các nút
+}
+
+// Error messages
+.alert {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+
+    &.alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+
+// Thêm các style khác cho các phần tử cụ thể (nếu cần)
+// Ví dụ
+table {
+    width: 100%;
+    border-collapse: collapse; // Loại bỏ khoảng cách giữa các cell
+
+    th,
+    td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid $light-gray;
+    }
+
+}

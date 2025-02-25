@@ -4,7 +4,7 @@ import Band from '../models/Band.js'; // Import nếu bạn muốn hiển thị 
 
 export const index = async (req, res) => {
     try {
-        const bookings = await Booking.find({}).populate('band').populate('user'); // Populate cả band và user
+        const bookings = await Booking.find({}).populate('band').populate('user').lean(); // Thêm .lean() ở đây
         res.render('booking/index', { title: 'Đặt lịch', bookings });
     } catch (error) {
         console.error("Lỗi khi truy vấn danh sách đặt lịch:", error);

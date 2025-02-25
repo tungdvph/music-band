@@ -1,14 +1,40 @@
 {{!-- src/app/views/members/index.hbs --}}
+
 <h2>Danh sách thành viên</h2>
 
+<a href="/members/create" class="btn btn-primary">Thêm thành viên</a>
+
 {{#if members}}
-<ul>
-    {{#each members}}
-    <li>
-        <a href="/members/{{this.slug}}">{{this.name}}</a> - {{this.role}}
-    </li>
-    {{/each}}
-</ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Vai trò</th>
+            <th>Ban nhạc</th>
+            <th>Thao tác</th> {{!-- Thêm cột Thao tác --}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#each members}}
+        <tr>
+            <td><a href="/members/{{this.slug}}">{{this.name}}</a></td>
+            <td>{{this.role}}</td>
+            <td>
+                {{#if this.band}}
+                {{this.band.name}}
+                {{else}}
+                - {{!-- Hoặc thông báo "Không có ban nhạc" --}}
+                {{/if}}
+            </td>
+            <td>
+                <a href="/members/{{this.slug}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                <a href="/members/{{this.slug}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
 {{else}}
 <p>Không có thành viên nào.</p>
 {{/if}}
