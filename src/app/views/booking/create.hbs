@@ -1,0 +1,53 @@
+{{!-- src/app/views/booking/create.hbs --}}
+<h2>Đặt lịch biểu diễn</h2>
+
+{{#if errors}}
+<div class="alert alert-danger">
+    <ul>
+        {{#each errors}}
+        <li>{{this.msg}}</li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+<form action="/booking" method="POST">
+    <div>
+        <label for="name">Tên:</label>
+        <input type="text" id="name" name="name" value="{{booking.name}}">
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{booking.email}}">
+    </div>
+    <div>
+        <label for="phone">Số điện thoại:</label>
+        <input type="tel" id="phone" name="phone" value="{{booking.phone}}">
+    </div>
+    <div>
+        <label for="date">Ngày:</label>
+        <input type="date" id="date" name="date" value="{{booking.date}}">
+    </div>
+    <div>
+        <label for="time">Thời gian:</label>
+        <input type="text" id="time" name="time" value="{{booking.time}}">
+    </div>
+    <div>
+        <label for="venue">Địa điểm:</label>
+        <input type="text" id="venue" name="venue" value="{{booking.venue}}">
+    </div>
+    <div>
+        <label for="message">Tin nhắn:</label>
+        <textarea id="message" name="message">{{booking.message}}</textarea>
+    </div>
+    <div>
+        <label for="band">Band:</label>
+            <select name="band" id="band">
+                    {{#each bands}}
+                    <option value="{{this._id}}" {{#if (eq ../booking.band this._id)}}selected{{/if}}>{{this.name}}
+            </option>
+                    {{/each}}
+                </select>
+    </div>
+    <button type="submit">Đặt lịch</button>
+</form>

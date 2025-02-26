@@ -1,11 +1,45 @@
-<h2>Booking</h2>
-{{#each bookings}}
-<div>
-    <p>Venue: {{this.venue}}</p>
-    <p>Date: {{this.date}}</p>
-    <p>Status: {{this.status}}</p>
-    {{#if this.band}}
-    <p>Band: {{this.band.name}}</p>
-    {{/if}}
-</div>
-{{/each}}
+{{!-- src/app/views/booking/index.hbs --}}
+<h1>{{title}}</h1>
+<a href="/booking/create">Tạo booking</a>
+{{#if bookings}}
+<table>
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Ngày</th>
+            <th>Thời gian</th>
+            <th>Địa điểm</th>
+            <th>Trạng thái</th>
+            {{#if band}}
+            <th>Band</th>
+            {{/if}}
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each bookings}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{dateFormat this.date "DD/MM/YYYY"}}</td>
+            <td>{{this.time}}</td>
+            <td>{{this.venue}}</td>
+            <td>{{this.status}}</td>
+            {{#if this.band}}
+            <td>{{this.band.name}}</td>
+            {{/if}}
+            <td>
+                <a href="/booking/{{this._id}}">Chi tiết</a>
+                <a href="/booking/{{this._id}}/edit">Sửa</a>
+                <a href="/booking/{{this._id}}/delete">Xoá</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p>Chưa có booking nào.</p>
+{{/if}}

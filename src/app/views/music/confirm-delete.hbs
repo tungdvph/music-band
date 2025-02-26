@@ -1,0 +1,11 @@
+{{!-- src/app/views/music/confirm-delete.hbs --}}
+
+<h2>Xác nhận xóa bài hát</h2>
+
+<p>Bạn có chắc chắn muốn xóa bài hát "{{song.title}}" không?</p>
+
+<form action="/music/{{song.slug}}?_method=DELETE" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Xóa</button>
+    <a href="/music/{{song.slug}}">Hủy</a>
+</form>

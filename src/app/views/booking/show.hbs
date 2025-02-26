@@ -1,0 +1,23 @@
+{{!-- src/app/views/booking/show.hbs --}}
+<h2>{{title}}</h2>
+
+<p>Tên người đặt: {{booking.name}}</p>
+<p>Email: {{booking.email}}</p>
+<p>Số điện thoại: {{booking.phone}}</p>
+<p>Ngày: {{dateFormat booking.date "DD/MM/YYYY"}}</p>
+<p>Thời gian: {{booking.time}}</p>
+<p>Địa điểm: {{booking.venue}}</p>
+<p>Trạng thái: {{booking.status}}</p>
+{{#if booking.band}}
+<p>Band: {{booking.band.name}}</p>
+{{/if}}
+
+
+{{#if booking.message}}
+<p>Tin nhắn: {{booking.message}}</p>
+{{/if}}
+<div>
+      <a href="/booking/{{booking._id}}/edit" class="btn btn-warning">Sửa</a>
+      <a href="/booking/{{booking._id}}/delete" class="btn btn-danger">Xóa</a>
+    <a href="/booking">Trở lại</a>
+</div>

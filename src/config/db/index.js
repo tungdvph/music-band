@@ -1,20 +1,21 @@
 // src/config/db/index.js
 import mongoose from 'mongoose';
-import dotenv from 'dotenv'; // Import dotenv
+import dotenv from 'dotenv';
 
-dotenv.config(); // Gọi dotenv.config() để load biến môi trường từ .env
+dotenv.config(); // Tải biến môi trường từ .env
 
 async function connect() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            // Các options này không còn cần thiết trong Mongoose 6+
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true,
-            // useCreateIndex: true,
+        // Lấy chuỗi kết nối từ biến môi trường.
+        const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/your_database_name'; // phương án dự phòng
+        await mongoose.connect(dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
         });
-        console.log('Connect to MongoDB successfully!');
+        console.log('Kết nối MongoDB thành công!');
     } catch (error) {
-        console.error('Connect to MongoDB failed:', error);
+        console.error('Kết nối MongoDB thất bại:', error);
+        process.exit(1); // Thoát ứng dụng nếu không kết nối được.
     }
 }
 
