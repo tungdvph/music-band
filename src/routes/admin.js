@@ -2,15 +2,14 @@
 import express from 'express';
 const router = express.Router();
 
-// Cập nhật đường dẫn import đến thư mục adminControllers
+// Import controllers
 import * as dashboardController from '../app/adminControllers/DashboardController.js';
 import * as usersController from '../app/adminControllers/UsersController.js';
-import * as bookingController from '../app/adminControllers/BookingController.js'; // Nếu bạn di chuyển BookingController
-// ... import các controller khác từ thư mục adminControllers
+import * as bookingController from '../app/adminControllers/BookingController.js';
 
-import { requireAdmin } from '../app/middleware/authMiddleware.js'; // Import middleware (bạn cần tự tạo file này)
+import { requireAdmin } from '../app/middleware/authMiddleware.js'; // Import middleware
 
-// Middleware kiểm tra quyền admin (tất cả các route trong admin đều cần)
+// Middleware kiểm tra quyền admin (cho tất cả các route trong file này)
 router.use(requireAdmin);
 
 // Route cho dashboard
@@ -18,16 +17,18 @@ router.get('/', dashboardController.index);
 
 // Route quản lý người dùng
 router.get('/users', usersController.index);
-// ... các route khác cho quản lý người dùng (thêm, sửa, xóa)
+// ... các route khác cho users ...
 
-// Route quản lý bookings (ví dụ, nếu bạn đã chuyển BookingController)
+// Route quản lý bookings
 router.get('/bookings', bookingController.index);
+router.get('/bookings/create', bookingController.create); // THÊM DÒNG NÀY!
+router.post('/bookings', bookingController.store);       // THÊM DÒNG NÀY!
 router.get('/bookings/:id', bookingController.show);
 router.get('/bookings/:id/edit', bookingController.edit);
 router.put('/bookings/:id', bookingController.update);
 router.get('/bookings/:id/delete', bookingController.confirmDelete);
 router.delete('/bookings/:id', bookingController.destroy);
 
-// ... các route admin khác (music, news, ...)
+// ... các route admin khác ...
 
 export default router;
