@@ -1,0 +1,37 @@
+{{!-- src/app/views/layouts/admin.hbs --}}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+    {{!-- Thêm các thẻ meta, link CSS, v.v. nếu cần --}}
+    <link rel="stylesheet" href="/css/style.css"> {{!-- Đường dẫn đến file css --}}
+</head>
+
+<body>
+    <header>
+        {{!-- Header của trang admin (logo, menu, ...) --}}
+        <h1>Admin Panel</h1>
+        <nav>
+            <ul>
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin/users">Users</a></li>
+                <li><a href="/admin/bookings">Bookings</a></li>
+                {{!-- Thêm các link khác --}}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {{{body}}} {{!-- Phần nội dung chính (sẽ được render từ các view con) --}}
+    </main>
+
+    <footer>
+        {{!-- Footer của trang admin --}}
+        <p>&copy; 2024 Your Music Band</p>
+    </footer>
+
+    {{!-- Thêm các script JS nếu cần --}}
+</body>
+
+</html>

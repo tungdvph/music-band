@@ -8,7 +8,7 @@
     {{#if this.author}}
     <p>Tác giả: {{this.author.username}}</p>
     {{/if}}
-    <p>Ngày đăng: {{ formatDate this.createdAt }}</p>
+    <p>Ngày đăng: {{ dateFormat this.createdAt 'YYYY-MM-DD' }}</p>
 
 </div>
 {{/each}}

@@ -1,0 +1,14 @@
+{{!-- src/app/views/admin/dashboard.hbs --}}
+{{!< layouts/admin}} <h1>{{title}}</h1>
+
+    <p>Tổng số người dùng: {{totalUsers}}</p>
+    <p>Tổng số đặt lịch: {{totalBookings}}</p>
+    <p>Tổng số bài hát: {{totalSongs}}</p>
+
+    <h2>Đặt lịch gần đây</h2>
+
+    <ul>
+        {{#each recentBookings}}
+        <li>{{this.name}} - {{this.date}} {{this.time}} - {{this.venue}}</li>
+        {{/each}}
+    </ul>
