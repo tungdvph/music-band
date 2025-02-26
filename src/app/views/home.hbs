@@ -1,3 +1,55 @@
-<h1>{{band.name}}</h1>
-<p>{{band.description}}</p>
-<img src="{{band.logo}}" alt="Band Logo">
+{{!-- src/app/views/home.hbs --}}
+<h1>Chào mừng đến với trang web của {{#if band}}{{band.name}}{{else}}[Tên Band Nhạc]{{/if}}</h1>
+
+<section>
+    <h2>Giới thiệu</h2>
+    {{#if band}}
+    <p>{{band.bio}}</p>
+    <img src="{{band.image}}" alt="{{band.name}}">
+    {{else}}
+    <p>[Giới thiệu ngắn gọn về band nhạc, phong cách âm nhạc, thành tựu,...]</p>
+    <img src="[Đường dẫn ảnh band nhạc]" alt="[Tên Band Nhạc]">
+    {{/if}}
+</section>
+
+<section>
+    <h2>Tin tức nổi bật</h2>
+    <ul>
+        <li><a href="#">[Tin tức 1]</a></li>
+        <li><a href="#">[Tin tức 2]</a></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Các thành viên</h2>
+    <div class="members-container">
+        {{#each members}}
+        <div class="member-item">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <h3><a href="/members/{{this.slug}}">{{this.name}}</a></h3>
+            <p>{{this.role}}</p>
+        </div>
+        {{/each}}
+    </div>
+</section>
+
+<section>
+    <h2>Nghe nhạc</h2>
+    <div class="music-container">
+        {{#each songs}} {{!-- Đổi thành songs --}}
+        <div class="music-item">
+            {{#if this.audioUrl}} {{!-- Dùng audioUrl --}}
+            <iframe width="560" height="315" src="{{this.audioUrl}}" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+            {{/if}}
+            <h3><a href="/songs/{{this.slug}}">{{this.title}}</a></h3> {{!-- Dùng title và slug --}}
+        </div>
+        {{/each}}
+    </div>
+</section>
+
+<section>
+    <h2>Liên hệ</h2>
+    <p>Để đặt lịch biểu diễn hoặc liên hệ với chúng tôi, vui lòng truy cập trang <a href="/contact">Liên hệ</a>.</p>
+</section>

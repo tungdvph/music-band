@@ -1,6 +1,8 @@
 // src/app/models/Schedule.js
 import mongoose from 'mongoose';
+import slug from 'mongoose-slug-updater'; // Import
 
+mongoose.plugin(slug); // Thêm plugin
 const Schema = mongoose.Schema;
 
 const ScheduleSchema = new Schema({
@@ -8,7 +10,10 @@ const ScheduleSchema = new Schema({
     venue: { type: String, required: true },
     date: { type: Date, required: true },
     time: { type: String },
-    //Các trường khác
+    title: { type: String, require: true }, // Trường này sẽ dùng để tạo slug
+    description: { type: String },
+    image: { type: String },
+    slug: { type: String, slug: 'title', unique: true },  // Thêm, slug từ title, unique
 },
     {
         timestamps: true

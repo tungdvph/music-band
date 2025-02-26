@@ -1,0 +1,15 @@
+{{!-- src/app/views/schedule/confirm-delete.hbs --}}
+
+<h2>Xác nhận xóa lịch trình</h2>
+
+<p>Bạn có chắc chắn muốn xóa lịch trình này không?</p>
+
+<p><strong>Tiêu đề:</strong> {{schedule.title}}</p>
+<p><strong>Ngày:</strong> {{dateFormat schedule.date "DD/MM/YYYY"}}</p>
+<p><strong>Thời gian:</strong> {{schedule.time}}</p>
+<p><strong>Địa điểm:</strong> {{schedule.venue}}</p>
+
+<form action="/schedule/{{schedule.slug}}?_method=DELETE" method="POST">
+    <button type="submit">Xóa</button>
+    <a href="/schedule">Hủy</a> {{!-- Hoặc href="/schedule/{{schedule.slug}}" để quay lại trang chi tiết --}}
+</form>
