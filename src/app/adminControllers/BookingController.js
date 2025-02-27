@@ -7,12 +7,14 @@ import Band from '../models/Band.js';
 export const index = async (req, res) => {
     try {
         const bookings = await BookingService.getAllBookings();
+        console.log("Bookings:", bookings); // Kiểm tra dữ liệu bookings
         res.render('admin/bookings/index', { title: 'Quản lý Đặt lịch', bookings: bookings, layout: 'admin' });
     } catch (error) {
         console.error(error);
         res.status(500).render('error', { message: 'Lỗi khi tải danh sách đặt lịch.', layout: 'admin' });
     }
 };
+
 
 // Hiển thị form tạo mới booking (GET /admin/bookings/create)
 export const create = async (req, res) => {

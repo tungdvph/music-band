@@ -5,6 +5,7 @@ import Band from '../models/Band.js';
 export const getAllMembers = async () => {
     try {
         const members = await Member.find({}).lean();
+        console.log("Members in service:", members); // Thêm dòng này
         return members;
     } catch (error) {
         throw new Error('Lỗi khi lấy danh sách thành viên: ' + error.message);

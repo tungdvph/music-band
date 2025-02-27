@@ -1,0 +1,43 @@
+{{!-- src/app/views/admin/members/edit.hbs --}}
+{{!< layouts/admin}} <h1>Chỉnh Sửa Thành Viên</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <form action="/admin/members/{{member.slug}}?_method=PUT" method="POST">
+        <div class="form-group">
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{member.name}}" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Vai trò:</label>
+            <input type="text" id="role" name="role" class="form-control" value="{{member.role}}">
+        </div>
+        <div class="form-group">
+            <label for="image">Link ảnh:</label>
+            <input type="text" id="image" name="image" class="form-control" value="{{member.image}}">
+        </div>
+        <div class="form-group">
+            <label for="bio">Tiểu sử:</label>
+            <textarea name="bio" id="bio" cols="30" rows="5" class="form-control">{{member.bio}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="band">Ban nhạc:</label>
+            <select name="band" id="band" class="form-control">
+                <option value="">-- Chọn ban nhạc --</option>
+                {{#each bands}}
+                <option value="{{this._id}}" {{#if (eq ../member.band._id this._id)}}selected{{/if}}>{{this.name}}
+                </option>
+                {{/each}}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a href="/admin/members" class="btn btn-secondary">Hủy</a>
+    </form>

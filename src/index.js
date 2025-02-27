@@ -7,7 +7,6 @@ import methodOverride from 'method-override';
 import moment from 'moment';
 import db from './config/db/index.js';
 import routes from './routes/index.js';
-import adminRoutes from './routes/admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +23,7 @@ async function startServer() {
         app.use(methodOverride('_method'));
         app.use(express.static(path.join(__dirname, 'public')));
 
-        const hbs = create({ // Tạo instance TRƯỚC
+        const hbs = create({
             extname: '.hbs',
             helpers: {
                 sum: (a, b) => a + b,
@@ -35,7 +34,6 @@ async function startServer() {
             }
         });
 
-        // Đăng ký helper dateFormat TRƯỚC
         hbs.handlebars.registerHelper('dateFormat', (date, format) => {
             if (!date) {
                 return '';
@@ -43,12 +41,11 @@ async function startServer() {
             return moment(date).format(format);
         });
 
-        app.engine('.hbs', hbs.engine); // Cấu hình engine SAU
+        app.engine('.hbs', hbs.engine);
         app.set('view engine', '.hbs');
         app.set('views', path.join(__dirname, 'app', 'views'));
 
         app.use('/', routes);
-        app.use('/admin', adminRoutes);
 
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);

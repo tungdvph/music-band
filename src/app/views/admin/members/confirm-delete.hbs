@@ -1,0 +1,10 @@
+{{!-- src/app/views/admin/members/confirm-delete.hbs --}}
+{{!< layouts/admin}} <h1>Xác Nhận Xóa</h1>
+
+    <p>Bạn có chắc chắn muốn xóa thành viên <strong>{{member.name}}</strong>?</p>
+    <p>Hành động này không thể hoàn tác!</p>
+
+    <form action="/admin/members/{{member.slug}}?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a href="/admin/members" class="btn btn-secondary">Hủy</a>
+    </form>
