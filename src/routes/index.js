@@ -7,7 +7,7 @@ import membersRouter from './members.js';
 import scheduleRouter from './schedule.js';
 import musicRouter from './music.js';
 import bookingRouter from './booking.js';
-import contactRouter from './contact.js';
+import contactRouter from './contact.js'; // Thay đổi ở đây
 import authRouter from './auth.js';
 import newsRouter from './news.js';
 import otherRouter from './other.js';
@@ -23,7 +23,7 @@ router.use('/members', membersRouter);
 router.use('/schedule', scheduleRouter);
 router.use('/music', musicRouter);
 router.use('/booking', bookingRouter);
-router.use('/contact', contactRouter);
+router.use('/contact', contactRouter); // Thay đổi ở đây
 router.use('/auth', authRouter);
 router.use('/news', newsRouter);
 router.use('/other', otherRouter);
