@@ -1,9 +1,19 @@
 // src/routes/admin/music.js
 import express from 'express';
+import MusicController from '../../app/adminControllers/MusicController.js';
+// import { requireAdmin } from '../../app/middleware/authMiddleware.js'; // Bỏ comment khi cần
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('admin/music/index', { title: 'Quản lý Bài Hát', layout: 'admin' });
-});
+// router.use(requireAdmin); // Tạm thời comment để test
+
+router.get('/', MusicController.index);
+router.get('/create', MusicController.create);
+router.post('/', MusicController.store);
+router.get('/:slug', MusicController.show);
+router.get('/:slug/edit', MusicController.edit);
+router.put('/:slug', MusicController.update);
+router.get('/:slug/delete', MusicController.confirmDelete);
+router.delete('/:slug', MusicController.destroy);
 
 export default router;

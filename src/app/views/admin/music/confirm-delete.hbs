@@ -1,0 +1,8 @@
+{{!< layouts/admin}} <h1>Xác Nhận Xóa</h1>
+
+    <p>Bạn có chắc chắn muốn xóa bài hát "{{song.title}}" không?</p>
+
+    <form action="/admin/music/{{song.slug}}?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a href="/admin/music" class="btn btn-secondary">Hủy</a>
+    </form>

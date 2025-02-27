@@ -1,0 +1,26 @@
+{{!< layouts/admin}} <h1>{{song.title}}</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            {{#if song.imageUrl}}
+            <img src="{{song.imageUrl}}" alt="{{song.title}}" class="img-fluid">
+            {{/if}}
+        </div>
+        <div class="col-md-8">
+            <p><strong>Nghệ sĩ:</strong> {{song.artist}}</p>
+            {{#if song.audioUrl}}
+            <p><strong>Audio:</strong> <a href="{{song.audioUrl}}" target="_blank">Nghe</a></p>
+            {{/if}}
+
+            {{#if song.lyrics}}
+            <h2>Lời bài hát</h2>
+            <p>{{song.lyrics}}</p>
+            {{/if}}
+
+            <div>
+                <a href="/admin/music/{{song.slug}}/edit" class="btn btn-warning">Sửa</a>
+                <a href="/admin/music/{{song.slug}}/delete" class="btn btn-danger">Xóa</a>
+                <a href="/admin/music" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,38 @@
+{{!< layouts/admin}} <h1>Quản Lý Bài Hát</h1>
+
+    <a href="/admin/music/create" class="btn btn-success mb-3">Thêm Bài Hát</a>
+
+    {{#if songs}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Nghệ sĩ</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each songs}}
+            <tr>
+                <td>
+                    {{#if this.imageUrl}}
+                    <img src="{{this.imageUrl}}" alt="{{this.title}}" width="50" height="50" style="object-fit: cover;">
+                    {{else}}
+                    <span>Không có ảnh</span>
+                    {{/if}}
+                </td>
+                <td>{{this.title}}</td>
+                <td>{{this.artist}}</td>
+                <td>
+                    <a href="/admin/music/{{this.slug}}" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a href="/admin/music/{{this.slug}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/music/{{this.slug}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Chưa có bài hát nào.</p>
+    {{/if}}

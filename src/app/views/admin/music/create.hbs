@@ -1,0 +1,37 @@
+{{!< layouts/admin}} <h1>Thêm Bài Hát</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <form action="/admin/music" method="POST">
+        <div class="form-group">
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{song.title}}" required>
+        </div>
+        <div class="form-group">
+            <label for="artist">Nghệ sĩ:</label>
+            <input type="text" id="artist" name="artist" class="form-control" value="{{song.artist}}">
+        </div>
+        <div class="form-group">
+            <label for="audioUrl">URL Audio:</label>
+            <input type="text" id="audioUrl" name="audioUrl" class="form-control" value="{{song.audioUrl}}" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">URL Ảnh:</label>
+            <input type="text" id="imageUrl" name="imageUrl" class="form-control" value="{{song.imageUrl}}">
+        </div>
+        <div class="form-group">
+            <label for="lyrics">Lời bài hát:</label>
+            <textarea id="lyrics" name="lyrics" class="form-control" rows="5">{{song.lyrics}}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Thêm</button>
+        <a href="/admin/music" class="btn btn-secondary">Hủy</a>
+    </form>
