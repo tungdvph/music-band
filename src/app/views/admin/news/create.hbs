@@ -1,0 +1,57 @@
+{{!< layouts/admin}} <div class="container mt-4">
+    <h1>Thêm Tin Tức</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <form action="/admin/news" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="updateId" value=""> {{!-- Thêm trường ẩn này --}}
+        <div class="form-group">
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{news.title}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Ảnh minh họa:</label>
+            <input type="file" id="image" name="image" class="form-control-file">
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả ngắn:</label>
+            <textarea name="description" id="description" class="form-control" rows="3">{{news.description}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="content">Nội dung bài đăng:</label>
+            <textarea id="content" name="content" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Thêm</button>
+        <a href="/admin/news" class="btn btn-secondary">Hủy</a>
+    </form>
+    </div>
+
+    <script src="https://cdn.tiny.cloud/1/wmqdqrjlwhjr3e61bld2xvpt15sp1q8t4t71zehfaq65tbky/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        function initTinyMCE() {
+            tinymce.init({
+                selector: 'textarea#content',
+                // apiKey: 'wmqdqrjlwhjr3e61bld2xvpt15sp1q8t4t71zehfaq65tbky', // Bỏ comment và điền API key nếu bạn có
+                plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount',
+                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen | forecolor backcolor | help',
+                menubar: 'favs file edit view insert format tools table',
+                height: 500,
+                image_advtab: true,
+                images_upload_url: '/admin/news/upload-image',
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initTinyMCE);
+    </script>

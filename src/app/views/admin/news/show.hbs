@@ -1,0 +1,23 @@
+{{!<layouts /admin}} <div class="container mt-5">
+    <h1>{{news.title}}</h1>
+    <p>
+        <strong>Ngày đăng:</strong> {{dateFormat news.createdAt 'DD/MM/YYYY HH:mm'}}
+    </p>
+    {{#if news.author}}
+    <p><strong>Tác giả</strong>{{news.author.name}}</p>
+    {{/if}}
+    {{#if news.image}}
+    <div>
+        <img src="{{news.image}}" alt="{{news.title}}" class="img-fluid">
+    </div>
+    {{/if}}
+
+    <div>
+        {{{news.content}}}
+    </div>
+    <div>
+        <a href="/admin/news/{{news.slug}}/edit" class="btn btn-warning">Sửa</a>
+        <a href="/admin/news/{{news._id}}/delete" class="btn btn-danger">Xóa</a>
+        <a href="/admin/news" class="btn btn-secondary">Quay lại</a>
+    </div>
+    </div>

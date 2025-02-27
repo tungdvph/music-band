@@ -1,0 +1,43 @@
+{{!< layouts/admin}} <h1>Quản Lý Tin Tức</h1>
+
+    <a href="/admin/news/create" class="btn btn-success mb-3">Thêm Tin Tức</a>
+
+    {{#if news}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tiêu đề</th>
+                <th>Người viết</th>
+                <th>Ngày đăng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each news}}
+            <tr>
+                <td>
+                    {{#if this.image}}
+                    <img src="{{this.image}}" alt="{{this.title}}" width="100">
+                    {{/if}}
+                </td>
+                <td><a href="/admin/news/{{this.slug}}">{{this.title}}</a></td>
+                <td>
+                    {{#if this.author}}
+                    {{this.author.name}} {{!-- Giả sử User model có trường name --}}
+                    {{else}}
+                    Không rõ
+                    {{/if}}
+                </td>
+                <td>{{dateFormat this.createdAt "DD/MM/YYYY"}}</td>
+                <td>
+                    <a href="/admin/news/{{this.slug}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/news/{{this._id}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Chưa có tin tức nào.</p>
+    {{/if}}

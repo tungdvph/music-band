@@ -1,0 +1,68 @@
+{{!< layouts/admin}} <div class="container mt-4">
+    <h1>Chỉnh Sửa Tin Tức</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <form action="/admin/news/{{news.slug}}/update?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{news.title}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Mô tả ngắn:</label>
+            <textarea name="description" id="description" class="form-control" rows="3">{{news.description}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Hình ảnh hiện tại:</label>
+            {{#if news.image}}
+            <div>
+                <img src="{{news.image}}" alt="Ảnh hiện tại" style="max-width: 200px; max-height: 200px;">
+            </div>
+            {{else}}
+            <p>Không có ảnh</p>
+            {{/if}}
+        </div>
+
+        <div class="form-group">
+            <label for="image">Chọn hình ảnh mới:</label>
+            <input type="file" id="image" name="image" class="form-control-file">
+        </div>
+
+        <div class="form-group">
+            <label for="content">Nội dung bài đăng:</label>
+            <textarea id="content" name="content" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a href="/admin/news" class="btn btn-secondary">Hủy</a>
+    </form>
+    </div>
+
+    <script src="https://cdn.tiny.cloud/1/wmqdqrjlwhjr3e61bld2xvpt15sp1q8t4t71zehfaq65tbky/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#content',
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen | forecolor backcolor | help',
+            menubar: 'favs file edit view insert format tools table', // Consider removing 'favs' if not used
+            height: 500,
+            image_advtab: true,
+            // images_upload_url: '/admin/news/upload-image',  // Uncomment and create this endpoint if you want *immediate* uploads.
+            setup: (editor) => {
+                editor.on('init', () => {
+                    editor.setContent(`{{{news.content}}}`); // Use triple braces for unescaped HTML
+                });
+            }
+        });
+    </script>

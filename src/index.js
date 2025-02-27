@@ -1,4 +1,4 @@
-// src/index.js (Đã sửa)
+// src/index.js
 import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
@@ -7,6 +7,9 @@ import methodOverride from 'method-override';
 import moment from 'moment';
 import db from './config/db/index.js';
 import routes from './routes/index.js';
+
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

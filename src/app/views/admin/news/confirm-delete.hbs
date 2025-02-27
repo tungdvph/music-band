@@ -1,0 +1,17 @@
+{{!< layouts/admin}} <h2>Xác nhận xóa bài viết</h2>
+
+    <p>Bạn có chắc chắn muốn xóa bài viết "{{news.title}}" không?</p>
+    <dl class="row">
+          <dt class="col-sm-3">Ngày</dt>
+          <dd class="col-sm-9">{{dateFormat news.createdAt "DD/MM/YYYY"}}</dd>
+
+          {{#if news.author}}
+        <dt class="col-sm-3">Tác giả</dt>
+            <dd class="col-sm-9">{{news.author.name}}</dd>
+          {{/if}}
+    </dl>
+
+    <form action="/admin/news/{{news._id}}?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a href="/admin/news" class="btn btn-secondary">Hủy</a>
+    </form>
