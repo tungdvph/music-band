@@ -1,0 +1,36 @@
+{{!< layouts/admin}} <h1>Chỉnh Sửa Lịch Trình</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    <form action="/admin/schedule/{{schedule._id}}?_method=PUT" method="POST">
+        <div class="form-group">
+            <label for="date">Ngày:</label>
+            <input type="date" id="date" name="date" class="form-control" value="{{schedule.date}}" required>
+        </div>
+        <div class="form-group">
+            <label for="time">Thời gian:</label>
+            <input type="time" id="time" name="time" class="form-control" value="{{schedule.time}}" required>
+        </div>
+        <div class="form-group">
+            <label for="venue">Địa điểm:</label>
+            <input type="text" id="venue" name="venue" class="form-control" value="{{schedule.venue}}" required>
+        </div>
+        <div class="form-group">
+            <label for="event">Tên sự kiện</label>
+            <input type="text" name="event" id="event" class="form-control" value="{{schedule.event}}">
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <textarea id="description" name="description" class="form-control"
+                rows="3">{{schedule.description}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a href="/admin/schedule" class="btn btn-secondary">Hủy</a>
+    </form>

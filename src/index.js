@@ -4,18 +4,18 @@ import { create } from 'express-handlebars';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
-import moment from 'moment';
 import db from './config/db/index.js';
 import routes from './routes/index.js';
+import dotenv from 'dotenv';
+import moment from 'moment'; // Import moment
 
-
-
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 async function startServer() {
     try {
@@ -26,27 +26,28 @@ async function startServer() {
         app.use(methodOverride('_method'));
         app.use(express.static(path.join(__dirname, 'public')));
 
+        // Cấu hình Handlebars (Đăng ký helper dateFormat)
         const hbs = create({
             extname: '.hbs',
             helpers: {
                 sum: (a, b) => a + b,
                 eq: (a, b) => a === b,
-                isObject: (value) => {
-                    return typeof value === 'object' && value !== null;
-                }
-            }
-        });
-
-        hbs.handlebars.registerHelper('dateFormat', (date, format) => {
-            if (!date) {
-                return '';
-            }
-            return moment(date).format(format);
+                isObject: value => typeof value === 'object' && value !== null,
+                dateFormat: (date, format) => { // Thêm helper dateFormat
+                    if (!date) return '';
+                    return moment(date).format(format);
+                },
+            },
         });
 
         app.engine('.hbs', hbs.engine);
         app.set('view engine', '.hbs');
-        app.set('views', path.join(__dirname, 'app', 'views'));
+
+        // Thiết lập thư mục views
+        app.set('views', [
+            path.join(__dirname, 'app', 'admin', 'views'),
+            path.join(__dirname, 'app', 'site', 'views')
+        ]);
 
         app.use('/', routes);
 
@@ -59,3 +60,12 @@ async function startServer() {
 }
 
 startServer();
+
+// Middleware xử lý lỗi chung
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render('error', {
+        message: err.message || 'Đã xảy ra lỗi không xác định!',
+        layout: 'admin',
+    });
+});

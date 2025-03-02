@@ -1,0 +1,60 @@
+{{!< layouts/admin}} {{!-- Sử dụng layout admin (nếu có) --}} <h1>Quản Lý Đặt Lịch</h1>
+
+    <a href="/admin/bookings/create" class="btn btn-success">Tạo Booking</a> {{!-- Nút Thêm Booking --}}
+
+    {{#if bookings}}
+    <table class="table"> {{!-- Thêm class "table" của Bootstrap (nếu dùng) --}}
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Ngày</th>
+                <th>Thời gian</th>
+                <th>Địa điểm</th>
+                <th>Trạng thái</th>
+                <th>Band</th>
+                <th>Người Đặt</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each bookings}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.date}}</td>
+                <td>{{this.time}}</td>
+                <td>{{this.venue}}</td>
+                <td>{{this.status}}</td>
+                <td>
+                    {{#if this.band}}
+                    {{this.band.name}}
+                    {{else}}
+                    Không có
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if this.user}}
+                    {{this.user.name}}
+                    {{else}}
+                    Khách
+                    {{/if}}
+                </td>
+                <td>
+                    <a href="/admin/bookings/{{this._id}}" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a href="/admin/bookings/{{this._id}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/bookings/{{this._id}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="10">Chưa có booking nào.</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Chưa có booking nào.</p>
+    {{/if}}

@@ -1,0 +1,35 @@
+{{!-- src/app/admin/views/members/index.hbs --}}
+{{!< layouts/admin}} <h1>Quản Lý Thành Viên</h1>
+
+    <a href="/admin/members/create" class="btn btn-success mb-3">Thêm Thành Viên</a> {{!-- Đường dẫn ĐÚNG --}}
+
+    {{#if members}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên</th>
+                <th>Vai trò</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each members}}
+            <tr>
+                <td>
+                    <img src="{{this.image}}" alt="{{this.name}}" width="50" height="50" style="object-fit: cover;">
+                </td>
+                <td>{{this.name}}</td>
+                <td>{{this.role}}</td>
+                <td>
+                    <a href="/admin/members/{{this.slug}}" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a href="/admin/members/{{this.slug}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/members/{{this.slug}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Chưa có thành viên nào.</p>
+    {{/if}}

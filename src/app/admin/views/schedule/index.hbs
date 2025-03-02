@@ -1,0 +1,34 @@
+{{!< layouts/admin}} <h1>Quản Lý Lịch Trình</h1>
+
+    <a href="/admin/schedule/create" class="btn btn-success mb-3">Thêm Lịch Trình</a>
+
+    {{#if schedules}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Thời gian</th>
+                <th>Địa điểm</th>
+                <th>Sự kiện</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each schedules}}
+            <tr>
+                <td>{{this.date}}</td>
+                <td>{{this.time}}</td>
+                <td>{{this.venue}}</td>
+                <td>{{this.event}}</td>
+                <td>
+                    <a href="/admin/schedule/{{this._id}}" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a href="/admin/schedule/{{this._id}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/schedule/{{this._id}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Chưa có lịch trình nào.</p>
+    {{/if}}

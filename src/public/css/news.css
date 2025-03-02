@@ -1,0 +1,94 @@
+/* public/css/news.css */
+/* public/css/news.css */
+
+/* Style cho container bao ngoài của trang tin tức (nếu cần) */
+.news-container {
+    /* Thêm các thuộc tính CSS bạn muốn cho container, ví dụ: */
+    /* max-width: 1200px; */
+    /* margin: 0 auto; */
+    /* padding: 20px; */
+}
+
+/* Hình ảnh trong card */
+.card-img-top {
+    object-fit: cover;
+    /* Đảm bảo ảnh hiển thị đầy đủ và không bị méo */
+    height: 200px;
+    /* Chiều cao cố định cho ảnh (tùy chỉnh) */
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng của card */
+}
+
+/* Tiêu đề tin tức trong card */
+.card-title {
+    /* Có thể style thêm cho tiêu đề, ví dụ: */
+    font-size: 1.1rem;
+    /* Kích thước chữ (tùy chỉnh) */
+    font-weight: bold;
+    /* In đậm (tùy chỉnh) */
+    margin-bottom: 0.5rem;
+    /* Khoảng cách với phần mô tả */
+}
+
+.card-title a {
+    color: #333;
+    /* Màu chữ cho tiêu đề (màu đen hoặc tùy chỉnh) */
+    text-decoration: none;
+    /* Bỏ gạch chân mặc định của thẻ <a> */
+}
+
+.card-title a:hover {
+    text-decoration: underline;
+    /* Gạch chân khi di chuột qua */
+    color: #007bff;
+    /* Đổi màu khi hover (tùy chỉnh) */
+}
+
+/* Mô tả tin tức trong card */
+.card-text {
+    /* Có thể style thêm cho phần mô tả, ví dụ: */
+    margin-bottom: 0.5rem;
+    /* Khoảng cách với phần ngày tháng/tác giả */
+    overflow: hidden;
+    /* Ẩn phần text thừa */
+    text-overflow: ellipsis;
+    /* Thêm dấu "..." nếu text quá dài */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* Giới hạn số dòng hiển thị */
+    -webkit-box-orient: vertical;
+}
+
+/* Ngày tháng/tác giả */
+.card-text small {
+    /* Style cho phần ngày tháng/tác giả (nếu cần) */
+    color: #6c757d;
+    /* Màu xám (tùy chỉnh) */
+}
+
+/* Phân trang */
+.pagination {
+    margin-top: 20px;
+    /* Khoảng cách với phần nội dung phía trên */
+    /* Thêm các style khác cho phân trang nếu bạn dùng thư viện CSS khác Bootstrap */
+}
+
+/* Style cho h1 trên trang news (nếu muốn style riêng) */
+.news-container h1 {
+    color: purple;
+    /* Màu tím (hoặc màu bạn muốn) */
+    margin-bottom: 1rem;
+    /* Khoảng cách với phần nội dung */
+    /* Thêm các style khác cho h1 (font-size, text-align, ...) */
+}
+
+.card {
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    /* Phóng to một chút khi hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
+}
