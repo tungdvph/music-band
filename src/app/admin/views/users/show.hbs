@@ -1,0 +1,26 @@
+{{!-- src/app/admin/views/users/show.hbs --}}
+{{!< layouts/admin}} <h1 class="mt-4 mb-4">Chi Tiết Người Dùng</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Tên đăng nhập:</strong> {{user.username}}</p>
+            <p><strong>Email:</strong> {{user.email}}</p>
+            <p><strong>Họ và tên:</strong> {{user.fullName}}</p>
+            <p><strong>Vai trò:</strong>
+                {{#if (eq user.role 'admin')}}
+                Quản trị viên
+                {{else if (eq user.role 'member')}}
+                Thành viên
+                {{else}}
+                Người dùng
+                {{/if}}
+            </p>
+            <p><strong>Ngày tạo:</strong> {{dateFormat user.createdAt 'DD/MM/YYYY HH:mm:ss'}}</p>
+            <p><strong>Ngày cập nhật:</strong> {{dateFormat user.updatedAt 'DD/MM/YYYY HH:mm:ss'}}</p>
+
+
+        </div>
+    </div>
+
+    <a href="/admin/users/{{user._id}}/edit" class="btn btn-warning mt-3">Chỉnh sửa</a>
+    <a href="/admin/users" class="btn btn-secondary mt-3">Quay lại</a>

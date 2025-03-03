@@ -1,4 +1,3 @@
-// src/routes/index.js
 import express from 'express';
 
 // SITE routes
@@ -17,7 +16,8 @@ import adminScheduleRouter from '../app/admin/routes/schedule.js';
 import adminMusic from '../app/admin/routes/music.js';
 import adminbookings from '../app/admin/routes/bookings.js';
 import adminnews from '../app/admin/routes/news.js';
-
+import adminUsersRouter from '../app/admin/routes/users.js';
+import adminAuthRouter from '../app/admin/routes/auth.js';
 
 
 const router = express.Router();
@@ -41,4 +41,6 @@ router.use('/admin/schedule', adminScheduleRouter);
 router.use('/admin/music', adminMusic);
 router.use('/admin/bookings', adminbookings);
 router.use('/admin/news', adminnews);
+router.use('/admin/users', adminUsersRouter);
+router.use('/admin/auth', adminAuthRouter);
 export default router;

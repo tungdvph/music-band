@@ -1,0 +1,49 @@
+{{!-- src/app/views/admin/users/create.hbs --}}
+{{!< layouts/admin}} <h1 class="mt-4 mb-4">Thêm Người Dùng</h1>
+
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <form action="/admin/users" method="POST">
+        <div class="form-group">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" class="form-control" value="{{user.username}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" value="{{user.email}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="fullName">Họ và tên:</label>
+            <input type="text" id="fullName" name="fullName" class="form-control" value="{{user.fullName}}">
+        </div>
+
+        <div class="form-group">
+            <label for="role">Vai trò:</label>
+            <select id="role" name="role" class="form-control" required>
+                <option value="user" {{#if (eq user.role 'user' )}}selected{{/if}}>User (Người dùng)</option>
+                <option value="member" {{#if (eq user.role 'member' )}}selected{{/if}}>Member (Thành viên)</option>
+                <option value="admin" {{#if (eq user.role 'admin' )}}selected{{/if}}>Admin (Quản trị viên)</option>
+            </select>
+            <small class="form-text text-muted">
+                Chọn "User" cho người dùng thông thường, "Member" cho thành viên ban nhạc, và "Admin" cho quản trị viên.
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Thêm Người Dùng</button>
+        <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+    </form>

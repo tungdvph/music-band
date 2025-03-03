@@ -11,11 +11,11 @@
     </div>
     {{/if}}
 
-    <form action="/admin/news" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="updateId" value=""> {{!-- Thêm trường ẩn này --}}
+    <form action="/admin/news" method="POST" enctype="multipart/form-data"
+        onsubmit="tinymce.get('content').triggerSave();">
         <div class="form-group">
             <label for="title">Tiêu đề:</label>
-            <input type="text" id="title" name="title" class="form-control" value="{{news.title}}" required>
+            <input type="text" id="title" name="title" class="form-control" value="{{news.title}}">
         </div>
 
         <div class="form-group">
@@ -43,13 +43,13 @@
         function initTinyMCE() {
             tinymce.init({
                 selector: 'textarea#content',
-                // apiKey: 'wmqdqrjlwhjr3e61bld2xvpt15sp1q8t4t71zehfaq65tbky', // Bỏ comment và điền API key nếu bạn có
+                // apiKey: 'wmqdqrjlwhjr3e61bld2xvpt15sp1q8t4t71zehfaq65tbky', // Bỏ comment và điền API key nếu bạn có.
                 plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
                 toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen | forecolor backcolor | help',
                 menubar: 'favs file edit view insert format tools table',
                 height: 500,
                 image_advtab: true,
-                images_upload_url: '/admin/news/upload-image',
+                images_upload_url: '/admin/news/upload-image', // Nếu bạn có endpoint upload ảnh.
             });
         }
 

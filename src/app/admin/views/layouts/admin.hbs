@@ -1,3 +1,4 @@
+{{!-- src/app/views/admin/layouts/admin.hbs --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,11 +16,8 @@
         /* Sidebar */
         .sidebar {
             background-color: #183857;
-            /* Màu nền xanh đậm */
             color: #fff;
-            /* Chữ trắng */
             min-height: 100vh;
-            /* Chiều cao tối thiểu 100% viewport height */
             padding-top: 1rem;
         }
 
@@ -37,21 +35,16 @@
 
         .sidebar-nav li a {
             display: block;
-            /* Để hover effect chiếm toàn bộ chiều rộng */
             color: #fff;
             padding: 0.75rem 1rem;
             text-decoration: none;
             border-radius: 0.25rem;
-            /* Bo góc nhẹ */
             transition: background-color 0.2s;
-            /* Hiệu ứng chuyển màu */
         }
 
         .sidebar-nav li a:hover {
             background-color: #25517d;
-            /* Màu nền khi hover (xanh đậm hơn) */
             color: #fff;
-            /* Chữ vẫn trắng */
         }
 
         .sidebar-nav li a i {
@@ -67,7 +60,12 @@
             font-weight: bold;
         }
 
-        /* Các CSS khác */
+        /* Navbar (thêm) */
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.5rem 1rem;
+        }
     </style>
 </head>
 
@@ -80,9 +78,8 @@
                 </div>
                 <nav class="sidebar-nav">
                     <ul>
-                        <li><a href="/admin/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                        <li><a href="/admin"><i class="fa-solid fa-house"></i> Dashboard</a></li>
                         <li><a href="/admin/members"><i class="fa-solid fa-user-group"></i> Quản lý Thành Viên</a></li>
-                        {{!-- Đã sửa --}}
                         <li><a href="/admin/schedule"><i class="fa-solid fa-calendar-days"></i> Quản lý Lịch Trình</a>
                         </li>
                         <li><a href="/admin/music"><i class="fa-solid fa-music"></i> Quản lý Bài Hát</a></li>
@@ -93,12 +90,31 @@
                         <li><a href="/admin/users"><i class="fa-solid fa-users"></i> Quản lý Người Dùng</a></li>
                         <li><a href="/admin/other"><i class="fa-solid fa-screwdriver-wrench"></i>Quản lý mục khác</a>
                         </li>
-
                     </ul>
                 </nav>
             </aside>
 
             <main class="col-md-9 ml-sm-auto col-lg-10 main-content">
+                {{!-- Navbar (Thêm phần này) --}}
+                <nav class="navbar navbar-light">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">{{title}}</span> {{!-- Hiển thị tiêu đề trang --}}
+
+                        {{#if user}} {{!-- Nếu đã đăng nhập --}}
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{user.username}} {{!-- Hiển thị tên người dùng --}}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/admin/auth/logout">Đăng xuất</a>
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                </nav>
+
                 {{{body}}}
             </main>
         </div>

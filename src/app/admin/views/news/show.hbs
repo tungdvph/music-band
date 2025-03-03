@@ -1,14 +1,14 @@
-{{!<layouts /admin}} <div class="container mt-5">
+{{!< layouts/admin}} <div class="container mt-5">
     <h1>{{news.title}}</h1>
     <p>
         <strong>Ngày đăng:</strong> {{dateFormat news.createdAt 'DD/MM/YYYY HH:mm'}}
     </p>
     {{#if news.author}}
-    <p><strong>Tác giả</strong>{{news.author.name}}</p>
+    <p><strong>Tác giả:</strong> {{news.author.username}}</p> {{!-- Sửa news.author.name thành news.author.username --}}
     {{/if}}
     {{#if news.image}}
     <div>
-        <img src="{{news.image}}" alt="{{news.title}}" class="img-fluid">
+        <img src="/{{news.image}}" alt="{{news.title}}" class="img-fluid"> {{!-- Thêm dấu / vào đầu src --}}
     </div>
     {{/if}}
 

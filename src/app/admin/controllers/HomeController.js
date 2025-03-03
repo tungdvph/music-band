@@ -10,7 +10,7 @@ export const index = async (req, res, next) => {
         const totalSongs = await MusicService.getTotalSongs();
         const recentBookings = await BookingService.getRecentBookings();
 
-        res.render('dashboard', { // Không cần layout: 'admin'
+        res.render('dashboard', {
             title: 'Dashboard',
             totalUsers,
             totalBookings,
