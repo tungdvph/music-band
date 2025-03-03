@@ -1,41 +1,43 @@
 {{!-- src/app/views/admin/users/index.hbs --}}
-{{!< layouts/admin}} {{!-- Sử dụng layout admin (nếu có). Nếu không có, bỏ dòng này. --}} <h1>Quản Lý Người Dùng</h1>
+{{!< layouts/admin}} <h1>Quản Lý Người Dùng</h1>
 
-    <a href="/admin/users/create" class="btn btn-primary">Thêm Người Dùng</a> {{!-- Nút thêm mới (nếu bạn có chức năng
-    này) --}}
+    <a href="/admin/users/create" class="btn btn-primary">Thêm Người Dùng</a>
 
-    {{#if users}} {{!-- Kiểm tra xem có danh sách users không --}}
-    <table class="table"> {{!-- Sử dụng class 'table' của Bootstrap (nếu bạn dùng Bootstrap) --}}
+    {{#if users}}
+    <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Tên</th>
                 <th>Email</th>
-                <th>Vai trò</th> {{!-- Thêm cột "Vai trò" (role) --}}
+                <th>Vai trò</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             {{#each users}}
             <tr>
-                <td>{{this.id}}</td> {{!-- Hiển thị ID (nếu có) --}}
-                <td>{{this.name}}</td>
+                <td>{{this._id}}</td> {{!-- Sửa thành this._id --}}
+                <td>{{this.username}}</td> {{!-- Sửa thành this.username --}}
                 <td>{{this.email}}</td>
-                <td>{{this.role}}</td> {{!-- Hiển thị vai trò --}}
+                <td>{{this.role}}</td>
                 <td>
                     <a href="/admin/users/{{this._id}}" class="btn btn-info btn-sm">Xem</a>
                     <a href="/admin/users/{{this._id}}/edit" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="/admin/users/{{this._id}}/delete" class="btn btn-danger btn-sm">Xóa</a>
-                    {{!-- Các nút chức năng. Thay đổi đường dẫn nếu cần. --}}
+                    {{!-- Thêm form để xóa, sử dụng method-override --}}
+                    <form action="/admin/users/{{this._id}}?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">Xóa</button>
+                    </form>
                 </td>
             </tr>
             {{else}}
             <tr>
-                <td colspan="5">Không có người dùng nào.</td> {{!-- Hiển thị nếu không có user --}}
+                <td colspan="5">Không có người dùng nào.</td>
             </tr>
             {{/each}}
         </tbody>
     </table>
     {{else}}
-    <p>Không có người dùng nào.</p> {{!-- Hiển thị nếu không có user --}}
+    <p>Không có người dùng nào.</p>
     {{/if}}
