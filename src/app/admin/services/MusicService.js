@@ -1,5 +1,6 @@
 // src/app/admin/services/MusicService.js
 import Song from '../../models/Song.js';
+import path from 'path'; // Import path
 
 class MusicService {
     async getAllSongs() {
@@ -18,12 +19,29 @@ class MusicService {
         }
     }
 
-    async createSong(songData) {
+    async createSong(songData, req) {
         try {
-            const newSong = new Song(songData);
+            let imagePath = null;
+            let audioPath = null;
+
+            if (req.files) {
+                if (req.files.image) {
+                    imagePath = path.join('uploads', req.files.image[0].filename).replace(/\\/g, "/");
+                }
+                if (req.files.audio) {
+                    audioPath = path.join('uploads', req.files.audio[0].filename).replace(/\\/g, "/");
+                }
+            }
+
+            const newData = {
+                ...songData,
+                imageUrl: imagePath,
+                audioUrl: audioPath,
+            };
+
+            const newSong = new Song(newData);
             return await newSong.save();
         } catch (error) {
-            // Xử lý lỗi (ví dụ: trùng tên bài hát)
             if (error.code === 11000) {
                 throw new Error("Tên bài hát đã tồn tại");
             }
@@ -31,9 +49,26 @@ class MusicService {
         }
     }
 
-    async updateSong(slug, songData) {
+    async updateSong(slug, songData, req) {
         try {
-            return await Song.findOneAndUpdate({ slug }, songData, { new: true, runValidators: true }).lean();
+            let imagePath = null;
+            let audioPath = null;
+
+            if (req.files) {
+                if (req.files.image) {
+                    imagePath = path.join('uploads', req.files.image[0].filename).replace(/\\/g, "/");
+                }
+                if (req.files.audio) {
+                    audioPath = path.join('uploads', req.files.audio[0].filename).replace(/\\/g, "/");
+                }
+            }
+            const newData = {
+                ...songData,
+                imageUrl: imagePath || songData.imageUrl, // Giữ nguyên nếu không có ảnh mới
+                audioUrl: audioPath || songData.audioUrl, // Giữ nguyên nếu không có audio mới
+            }
+
+            return await Song.findOneAndUpdate({ slug }, newData, { new: true, runValidators: true }).lean();
         }
         catch (error) {
             if (error.code === 11000) {
@@ -46,19 +81,17 @@ class MusicService {
     async deleteSong(slug) {
         try {
             return await Song.findOneAndDelete({ slug });
-        }
-        catch (error) {
+        } catch (error) {
             throw new Error('Lỗi khi xóa bài hát: ' + error.message);
         }
     }
 
-    // Thêm phương thức getTotalSongs()
     async getTotalSongs() {
         try {
             const count = await Song.countDocuments();
             return count;
         } catch (error) {
-            throw new Error('Lỗi khi thống kê số lượng bài hát: ' + error.message);
+            throw new Error('Lỗi khi đếm số lượng bài hát: ' + error.message);
         }
     }
 }

@@ -1,3 +1,4 @@
+{{!-- src/app/admin/views/music/edit.hbs --}}
 {{!< layouts/admin}} <h1>Chỉnh Sửa Bài Hát</h1>
 
     {{#if errors}}
@@ -10,7 +11,7 @@
     </div>
     {{/if}}
 
-    <form action="/admin/music/{{song.slug}}?_method=PUT" method="POST">
+    <form action="/admin/music/{{song.slug}}?_method=PUT" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Tiêu đề:</label>
             <input type="text" id="title" name="title" class="form-control" value="{{song.title}}" required>
@@ -20,12 +21,30 @@
             <input type="text" id="artist" name="artist" class="form-control" value="{{song.artist}}">
         </div>
         <div class="form-group">
-            <label for="audioUrl">URL Audio:</label>
-            <input type="text" id="audioUrl" name="audioUrl" class="form-control" value="{{song.audioUrl}}" required>
+            <label>Audio hiện tại:</label>
+            {{#if song.audioUrl}}
+            <p><audio controls>
+                    <source src="/{{song.audioUrl}}" type="audio/mpeg">
+                </audio></p>
+            {{else}}
+            <p>Không có audio</p>
+            {{/if}} {{!-- Thêm dòng này để đóng khối if --}}
         </div>
         <div class="form-group">
-            <label for="imageUrl">URL Ảnh:</label>
-            <input type="text" id="imageUrl" name="imageUrl" class="form-control" value="{{song.imageUrl}}">
+            <label for="audio">Chọn audio mới:</label>
+            <input type="file" id="audio" name="audio" class="form-control-file" accept=".mp3,audio/*">
+        </div>
+        <div class="form-group">
+            <label>Ảnh hiện tại:</label>
+            {{#if song.imageUrl}}
+            <p><img src="/{{song.imageUrl}}" alt="Ảnh hiện tại" style="max-width:200px"></p>
+            {{else}}
+            <p>Không có ảnh</p>
+            {{/if}}
+        </div>
+        <div class="form-group">
+            <label for="image">Chọn ảnh mới:</label>
+            <input type="file" id="image" name="image" class="form-control-file" accept="image/*">
         </div>
         <div class="form-group">
             <label for="lyrics">Lời bài hát:</label>

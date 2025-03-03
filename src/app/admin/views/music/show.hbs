@@ -1,15 +1,18 @@
+{{!-- src/app/admin/views/music/show.hbs --}}
 {{!< layouts/admin}} <h1>{{song.title}}</h1>
 
     <div class="row">
         <div class="col-md-4">
             {{#if song.imageUrl}}
-            <img src="{{song.imageUrl}}" alt="{{song.title}}" class="img-fluid">
+            <img src="/{{song.imageUrl}}" alt="{{song.title}}" class="img-fluid">
             {{/if}}
         </div>
         <div class="col-md-8">
             <p><strong>Nghệ sĩ:</strong> {{song.artist}}</p>
             {{#if song.audioUrl}}
-            <p><strong>Audio:</strong> <a href="{{song.audioUrl}}" target="_blank">Nghe</a></p>
+            <p><strong>Audio:</strong> <audio controls>
+                    <source src="/{{song.audioUrl}}" type="audio/mpeg">
+                </audio></p>
             {{/if}}
 
             {{#if song.lyrics}}

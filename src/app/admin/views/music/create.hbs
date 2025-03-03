@@ -1,3 +1,4 @@
+{{!-- src/app/admin/views/music/create.hbs --}}
 {{!< layouts/admin}} <h1>Thêm Bài Hát</h1>
 
     {{#if errors}}
@@ -10,26 +11,26 @@
     </div>
     {{/if}}
 
-    <form action="/admin/music" method="POST">
+    <form action="/admin/music" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Tiêu đề:</label>
-            <input type="text" id="title" name="title" class="form-control" value="{{song.title}}" required>
+            <input type="text" id="title" name="title" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="artist">Nghệ sĩ:</label>
-            <input type="text" id="artist" name="artist" class="form-control" value="{{song.artist}}">
+            <input type="text" id="artist" name="artist" class="form-control">
         </div>
         <div class="form-group">
-            <label for="audioUrl">URL Audio:</label>
-            <input type="text" id="audioUrl" name="audioUrl" class="form-control" value="{{song.audioUrl}}" required>
+            <label for="audio">Audio:</label>
+            <input type="file" id="audio" name="audio" class="form-control-file" accept=".mp3,audio/*">
         </div>
         <div class="form-group">
-            <label for="imageUrl">URL Ảnh:</label>
-            <input type="text" id="imageUrl" name="imageUrl" class="form-control" value="{{song.imageUrl}}">
+            <label for="image">Ảnh bìa:</label>
+            <input type="file" id="image" name="image" class="form-control-file" accept="image/*">
         </div>
         <div class="form-group">
             <label for="lyrics">Lời bài hát:</label>
-            <textarea id="lyrics" name="lyrics" class="form-control" rows="5">{{song.lyrics}}</textarea>
+            <textarea id="lyrics" name="lyrics" class="form-control" rows="5"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Thêm</button>

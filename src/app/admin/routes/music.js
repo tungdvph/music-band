@@ -1,20 +1,34 @@
 // src/app/admin/routes/music.js
 import express from 'express';
-import * as MusicController from '../controllers/MusicController.js'; // Sửa đường dẫn
+import * as MusicController from '../controllers/MusicController.js';
 import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
+import multer from 'multer';
 
 const router = express.Router();
 
-// Áp dụng middleware cho tất cả các route trong file này
+// Cấu hình multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'src/public/uploads/'); // Nơi lưu ảnh và audio
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + file.originalname.slice(file.originalname.lastIndexOf('.')));
+    }
+});
+const upload = multer({ storage: storage });
+
+// Middleware kiểm tra đăng nhập và quyền admin
 router.use(requireLogin);
 router.use(requireAdmin);
 
 router.get('/', MusicController.index);
 router.get('/create', MusicController.create);
-router.post('/', MusicController.store);
+// Sử dụng multer middleware với upload.fields để xử lý cả image và audio
+router.post('/', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), MusicController.store);
 router.get('/:slug', MusicController.show);
 router.get('/:slug/edit', MusicController.edit);
-router.put('/:slug', MusicController.update);
+router.put('/:slug', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'audio', maxCount: 1 }]), MusicController.update); // Update cũng cần upload
 router.get('/:slug/delete', MusicController.confirmDelete);
 router.delete('/:slug', MusicController.destroy);
 

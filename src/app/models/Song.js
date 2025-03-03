@@ -7,15 +7,15 @@ const Schema = mongoose.Schema;
 
 const SongSchema = new Schema({
     title: { type: String, required: true },
-    artist: { type: String }, // Hoặc: { type: Schema.Types.ObjectId, ref: 'Artist' }
-    audioUrl: { type: String, required: true }, // Bắt buộc phải có URL
-    imageUrl: { type: String }, // Thêm trường image
+    artist: { type: String },
+    audioUrl: { type: String, required: true }, // URL của file audio, bắt buộc
+    imageUrl: { type: String },   // URL của ảnh bìa
     lyrics: { type: String },
-    slug: { type: String, slug: "title", unique: true }
-    // Các trường khác
+    slug: { type: String, slug: 'title', unique: true },
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 const Song = mongoose.model('Song', SongSchema);
+
 export default Song;
