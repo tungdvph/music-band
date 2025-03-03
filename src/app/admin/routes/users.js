@@ -1,13 +1,8 @@
 // src/app/admin/routes/users.js
 import express from 'express';
 import * as usersController from '../controllers/UsersController.js';
-import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js'; // Import
 
 const router = express.Router();
-
-// Áp dụng middleware cho tất cả các route trong file này
-router.use(requireLogin);
-router.use(requireAdmin);
 
 // Các route của bạn (giữ nguyên)
 router.get('/', usersController.index);

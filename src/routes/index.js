@@ -1,3 +1,4 @@
+// src/routes/index.js
 import express from 'express';
 
 // SITE routes
@@ -19,10 +20,12 @@ import adminnews from '../app/admin/routes/news.js';
 import adminUsersRouter from '../app/admin/routes/users.js';
 import adminAuthRouter from '../app/admin/routes/auth.js';
 
+import { requireLogin, requireAdmin } from '../app/middleware/authMiddleware.js'; // Import
+
 
 const router = express.Router();
 
-// SITE routes (Không cần middleware để set views ở đây)
+// SITE routes
 router.get('/', (req, res) => {
     res.render('home', { layout: false }); // Trang chủ (nếu có)
 });
@@ -33,14 +36,20 @@ router.use('/music', siteMusicinRouter);
 router.use('/news', siteNewsRouter);
 router.use('/schedule', siteScheduleRouter);
 
-// ADMIN routes (Không cần middleware để set views ở đây)
-router.use('/admin', adminHomeRouter);
-router.use('/admin/contacts', adminContactRouter);
-router.use('/admin/members', adminMembersRouter);
-router.use('/admin/schedule', adminScheduleRouter);
-router.use('/admin/music', adminMusic);
-router.use('/admin/bookings', adminbookings);
-router.use('/admin/news', adminnews);
-router.use('/admin/users', adminUsersRouter);
-router.use('/admin/auth', adminAuthRouter);
+// ADMIN routes
+router.use('/admin/auth', adminAuthRouter); // Auth routes (login, logout) *không* cần requireLogin
+router.use('/admin', requireLogin, adminHomeRouter); // Áp dụng requireLogin cho tất cả /admin
+router.use('/admin/contacts', requireLogin, adminContactRouter);
+router.use('/admin/members', requireLogin, adminMembersRouter);
+router.use('/admin/schedule', requireLogin, adminScheduleRouter);
+router.use('/admin/music', requireLogin, adminMusic);
+router.use('/admin/bookings', requireLogin, adminbookings);
+router.use('/admin/news', requireLogin, adminnews);
+router.use('/admin/users', requireLogin, requireAdmin, adminUsersRouter); // Cần cả requireLogin và requireAdmin
+
+// Route mặc định cho /admin (chuyển hướng đến /admin/dashboard), đã có requireLogin ở trên
+// router.get('/', (req, res) => {
+//     res.redirect('/admin/dashboard');
+// });
+
 export default router;

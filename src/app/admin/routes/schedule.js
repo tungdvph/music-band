@@ -1,13 +1,8 @@
 // src/app/admin/routes/schedule.js
 import express from 'express';
 import * as scheduleController from '../controllers/ScheduleController.js';
-import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
-
-// Áp dụng middleware cho tất cả các route trong file này
-router.use(requireLogin);
-router.use(requireAdmin);
 
 router.get('/', scheduleController.index);
 router.get('/create', scheduleController.create);

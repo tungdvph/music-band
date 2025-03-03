@@ -1,7 +1,6 @@
 // src/app/admin/routes/music.js
 import express from 'express';
 import * as MusicController from '../controllers/MusicController.js';
-import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 import multer from 'multer';
 
 const router = express.Router();
@@ -18,9 +17,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Middleware kiểm tra đăng nhập và quyền admin
-router.use(requireLogin);
-router.use(requireAdmin);
 
 router.get('/', MusicController.index);
 router.get('/create', MusicController.create);

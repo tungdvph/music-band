@@ -1,11 +1,8 @@
 import express from 'express';
 import *as NewsController from '../controllers/NewsController.js';
 import multer from 'multer'; // Import multer
-import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 const router = express.Router();
-// Áp dụng middleware cho tất cả các route trong file này
-router.use(requireLogin);
-router.use(requireAdmin);
+
 // Cấu hình multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

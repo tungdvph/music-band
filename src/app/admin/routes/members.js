@@ -1,7 +1,6 @@
 // src/app/admin/routes/members.js 
 import express from 'express';
 import * as membersController from '../controllers/MembersController.js';
-import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 import multer from 'multer'; // Import multer
 
 const router = express.Router();
@@ -18,9 +17,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
-router.use(requireLogin);
-router.use(requireAdmin);
 
 router.get('/', membersController.index);
 router.get('/create', membersController.create);
