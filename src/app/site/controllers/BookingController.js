@@ -1,5 +1,4 @@
-// src/app/site/controllers/BookingController.js
-import BookingService from '../services/SiteBookingService.js';
+import BookingService from '../services/BookingService.js'; // Đã sửa đường dẫn import
 import { validationResult } from 'express-validator';
 import Band from '../../models/Band.js';
 import moment from 'moment'; // Thêm import moment
@@ -9,7 +8,7 @@ import moment from 'moment'; // Thêm import moment
 export const create = async (req, res, next) => { // Thêm next vào tất cả
     try {
         const bands = await Band.find({}).lean();
-        res.render('booking/create', { title: 'Đặt lịch biểu diễn', bands: bands }); // Sửa đường dẫn view
+        res.render('site/booking/create', { title: 'Đặt lịch biểu diễn', bands: bands }); // Sửa đường dẫn view
     } catch (error) {
         next(error)
     }
@@ -22,7 +21,7 @@ export const store = async (req, res, next) => { // Thêm 'next'
     if (!errors.isEmpty()) {
         try {
             const bands = await Band.find({}).lean();
-            return res.status(400).render('booking/create', { // Sửa đường dẫn view
+            return res.status(400).render('site/booking/create', { // Sửa đường dẫn view
                 title: 'Đặt lịch biểu diễn',
                 errors: errors.array(),
                 booking: req.body,
@@ -46,7 +45,7 @@ export const show = async (req, res, next) => { //them next
     try {
         const booking = await BookingService.getBookingById(req.params.id);
         if (!booking) {
-            return res.status(404).render('error', { message: 'Không tìm thấy booking', layout: 'default' }) //có thể chuyển hướng sang 1 trang thông báo lỗi.  Thêm layout
+            return res.status(404).render('error', { message: 'Không tìm thấy booking', layout: 'default' }) //có thể chuyển hướng sang 1 trang thông báo lỗi.  Thêm layout
         }
 
         // Định dạng ngày tháng TRƯỚC KHI render
@@ -54,7 +53,7 @@ export const show = async (req, res, next) => { //them next
             booking.date = moment(booking.date).format('DD/MM/YYYY'); // Hoặc định dạng khác
         }
 
-        res.render('booking/show', { title: 'Chi tiết đặt lịch', booking: booking, layout: 'default' }) // Sửa đường dẫn view, thêm layout
+        res.render('site/booking/show', { title: 'Chi tiết đặt lịch', booking: booking, layout: 'default' }) // Sửa đường dẫn view, thêm layout
     } catch (error) {
         next(error)
     }
@@ -76,7 +75,7 @@ export const edit = async (req, res, next) => {
             booking.date = moment(booking.date).format('YYYY-MM-DD');
         }
 
-        res.render('booking/edit', { title: 'Chỉnh sửa đặt lịch', booking: booking, bands: bands, layout: 'default' });
+        res.render('site/booking/edit', { title: 'Chỉnh sửa đặt lịch', booking: booking, bands: bands, layout: 'default' });
     } catch (error) {
         next(error)
     }
@@ -89,7 +88,7 @@ export const update = async (req, res, next) => {
         try {
             const booking = await BookingService.getBookingById(req.params.id);
             const bands = await Band.find({}).lean();
-            return res.status(400).render('booking/edit', {
+            return res.status(400).render('site/booking/edit', {
                 title: 'Chỉnh sửa đặt lịch',
                 errors: errors.array(),
                 booking: booking,
@@ -122,7 +121,7 @@ export const confirmDelete = async (req, res, next) => {
         if (booking.date) {
             booking.date = moment(booking.date).format('DD/MM/YYYY'); // Hoặc định dạng khác
         }
-        res.render('booking/confirm-delete', { title: 'Xác nhận xóa', booking: booking, layout: 'default' });
+        res.render('site/booking/confirm-delete', { title: 'Xác nhận xóa', booking: booking, layout: 'default' });
     } catch (error) {
         next(error)
     }
@@ -153,7 +152,7 @@ export const index = async (req, res, next) => {
             }
             return booking;
         });
-        res.render('booking/index', { title: "Danh sách đặt lịch", bookings: formattedBookings, layout: 'default' })
+        res.render('site/booking/index', { title: "Danh sách đặt lịch", bookings: formattedBookings, layout: 'default' })
     } catch (error) {
         next(error)
     }

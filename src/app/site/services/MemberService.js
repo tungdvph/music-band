@@ -1,7 +1,6 @@
-// src/app/site/services/SiteMemberService.js
 import Member from '../../models/Member.js';
 
-class SiteMemberService {
+class MemberService { // Đã sửa tên class
     async getAllMembers() {
         try {
             const members = await Member.find({}).lean(); // Hoặc có thể thêm các điều kiện (ví dụ: chỉ lấy thành viên đang hoạt động)
@@ -22,4 +21,4 @@ class SiteMemberService {
     // ... các phương thức khác nếu cần cho phần site (nhưng KHÔNG có create, update, delete)
 }
 
-export default new SiteMemberService();
+export default new MemberService(); // Đã sửa tên class khi export

@@ -1,7 +1,6 @@
-// src/app/site/services/SiteScheduleService.js
 import Schedule from '../../models/Schedule.js';
 
-class SiteScheduleService {
+class ScheduleService { // Đã sửa tên class
   async getUpcomingSchedules() {
     try {
       const now = new Date();
@@ -26,4 +25,4 @@ class SiteScheduleService {
   // Có thể thêm các phương thức khác, ví dụ: getSchedulesByMonth(year, month)
 }
 
-export default new SiteScheduleService();
+export default new ScheduleService(); // Đã sửa tên class khi export

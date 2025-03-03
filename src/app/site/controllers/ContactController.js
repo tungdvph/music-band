@@ -1,9 +1,9 @@
 // src/app/site/controllers/ContactController.js
-import ContactService from '../services/SiteContactService.js'; // Sửa đường dẫn
+import ContactService from '../services/ContactService.js'; // Đã sửa đường dẫn
 import { validationResult } from 'express-validator';
 
 export const index = async (req, res) => {
-    // Chỉ render form liên hệ.  Không cần lấy danh sách liên hệ.
+    // Chỉ render form liên hệ.  Không cần lấy danh sách liên hệ.
     res.render('site/contact', { title: 'Liên hệ', layout: false }); // Sửa đường dẫn view và layout
 };
 

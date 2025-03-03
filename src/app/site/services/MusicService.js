@@ -1,10 +1,6 @@
-// src/app/site/services/SiteMusicService.js
-// Xóa dòng này:
-// import SiteMusicService from '../services/SiteMusicService.js';
-
 import Song from '../../models/Song.js';
 
-class SiteMusicService {
+class MusicService { // Đã sửa tên class
     async getAllSongs() {
         try {
             return await Song.find({}).lean(); // Hoặc thêm điều kiện (ví dụ: chỉ lấy bài hát đã được publish)
@@ -23,4 +19,4 @@ class SiteMusicService {
 
     // ... các phương thức khác nếu cần cho phần site (nhưng KHÔNG có create, update, delete)
 }
-export default new SiteMusicService();
+export default new MusicService(); // Đã sửa tên class khi export

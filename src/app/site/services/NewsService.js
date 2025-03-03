@@ -1,13 +1,13 @@
-// src/app/site/services/SiteNewsService.js
 import News from '../../models/News.js';
 
-class SiteNewsService {
-    async getLatestNews(limit = 5) { // Mặc định lấy 5 bài mới nhất
+class NewsService {
+    async getLatestNews(limit = 5, skip = 0) { // Thêm tham số skip
         try {
             const news = await News.find({})
-                .sort({ createdAt: -1 }) // Mới nhất lên trên
+                .sort({ createdAt: -1 })
+                .skip(skip) // Sử dụng skip
                 .limit(limit)
-                .populate('author') // Nếu bạn muốn hiển thị thông tin tác giả
+                .populate('author')
                 .lean();
             return news;
         } catch (error) {
@@ -23,6 +23,14 @@ class SiteNewsService {
             throw new Error('Lỗi khi lấy tin tức: ' + error.message);
         }
     }
+
+    async getTotalNewsCount() { // Thêm hàm đếm tổng số tin
+        try {
+            return await News.countDocuments({});
+        } catch (error) {
+            throw new Error('Lỗi khi đếm số lượng tin tức: ' + error.message);
+        }
+    }
 }
 
-export default new SiteNewsService();
+export default new NewsService();

@@ -1,10 +1,9 @@
-//src/app/site/routes/news.js
 import express from 'express';
-import * as NewsController from '../controllers/NewsController.js'; //Sửa đường dẫn
+import * as NewsController from '../controllers/NewsController.js';
 
 const router = express.Router();
 
 router.get('/', NewsController.index);
-router.get('/:slug', NewsController.show); // Thêm route này
+router.get('/:slug', NewsController.show);
 
 export default router;
