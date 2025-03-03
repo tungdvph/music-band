@@ -8,10 +8,7 @@ async function connect() {
     try {
         // Lấy chuỗi kết nối từ biến môi trường.
         const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/your_database_name'; // phương án dự phòng
-        await mongoose.connect(dbUrl, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(dbUrl); // Đã xóa useNewUrlParser và useUnifiedTopology
         console.log('Kết nối MongoDB thành công!');
     } catch (error) {
         console.error('Kết nối MongoDB thất bại:', error);
