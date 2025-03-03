@@ -7,9 +7,10 @@ import db from './config/db/index.js';
 import routes from './routes/index.js';
 import dotenv from 'dotenv';
 import moment from 'moment';
-import session from 'express-session'; // Thêm
-import flash from 'connect-flash';     // Thêm
+import session from 'express-session';
+import flash from 'connect-flash';
 import fs from 'fs';
+
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,9 +31,9 @@ async function startServer() {
 
         app.use(express.static(path.join(__dirname, 'public')));
 
-        // Cấu hình express-session (Thêm đoạn này)
+        // Cấu hình express-session
         app.use(session({
-            secret: 'your-secret-key', // Thay bằng một chuỗi bí mật, KHÔNG ĐƯỢC public chuỗi này.
+            secret: process.env.SESSION_SECRET, // Lấy từ .env
             resave: false,
             saveUninitialized: false,
             cookie: {
@@ -40,15 +41,15 @@ async function startServer() {
             }
         }));
 
-        // Cấu hình connect-flash (Thêm đoạn này)
+        // Cấu hình connect-flash
         app.use(flash());
 
-        // Middleware để truyền biến flash messages vào tất cả các views
+        // Middleware để truyền biến flash messages và user vào tất cả các views
         app.use((req, res, next) => {
             res.locals.success_msg = req.flash('success_msg');
             res.locals.error_msg = req.flash('error_msg');
-            res.locals.error = req.flash('error');  // Cho passport.js (sẽ dùng sau)
-            res.locals.user = req.user || null; // Thêm dòng này, truyền thông tin user vào view.
+            res.locals.error = req.flash('error');
+            res.locals.user = req.session.user || null; // Lấy từ req.session.user
             next();
         });
 
@@ -66,6 +67,7 @@ async function startServer() {
             },
         });
 
+        // Đăng ký partials
         const partialsDir = path.join(__dirname, 'app', 'admin', 'views', 'partials');
         if (fs.existsSync(partialsDir)) {
             const filenames = fs.readdirSync(partialsDir);
@@ -80,7 +82,6 @@ async function startServer() {
                 hbs.handlebars.registerPartial(name, template);
             });
         }
-
 
         app.engine('.hbs', hbs.engine);
         app.set('view engine', '.hbs');
@@ -103,7 +104,7 @@ async function startServer() {
 startServer();
 
 
-// Middleware xử lý lỗi chung (Giữ nguyên)
+// Middleware xử lý lỗi chung
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {

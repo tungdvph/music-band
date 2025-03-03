@@ -1,21 +1,22 @@
 // src/app/admin/routes/users.js
 import express from 'express';
 import * as usersController from '../controllers/UsersController.js';
-import { requireAdmin } from '../../middleware/authMiddleware.js'; // Sửa lại đường dẫn cho đúng
+import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js'; // Import
 
 const router = express.Router();
 
-// Middleware kiểm tra quyền admin (tạm thời bỏ qua, bạn có thể dùng lại sau khi có hệ thống auth)
-// router.use(requireAdmin);
+// Áp dụng middleware cho tất cả các route trong file này
+router.use(requireLogin);
+router.use(requireAdmin);
 
-// Route quản lý người dùng
-router.get('/create', usersController.create); // Thêm route này
+// Các route của bạn (giữ nguyên)
 router.get('/', usersController.index);
-router.post('/', usersController.store);        // Thêm route này (xử lý form thêm user)
-router.get('/:id', usersController.show);       // Thêm route này (xem chi tiết)
-router.get('/:id/edit', usersController.edit);   // Thêm route này (sửa)
-router.put('/:id', usersController.update);      // Thêm route này (cập nhật, dùng PUT)
-router.get('/:id/delete', usersController.confirmDelete); // Thêm route này (xác nhận xóa)
-router.delete('/:id', usersController.destroy);   // Thêm route này (xóa, dùng DELETE)
+router.get('/create', usersController.create);
+router.post('/', usersController.store);
+router.get('/:id', usersController.show);
+router.get('/:id/edit', usersController.edit);
+router.put('/:id', usersController.update);
+router.get('/:id/delete', usersController.confirmDelete); // GET cho confirm
+router.delete('/:id', usersController.destroy); // DELETE để xóa
 
 export default router;

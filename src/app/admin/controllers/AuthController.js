@@ -34,8 +34,7 @@ export const handleLogin = async (req, res) => {
         // 4. Kiểm tra role và chuyển hướng
         if (user.role === 'admin') {
             res.redirect('/admin'); // Chuyển hướng đến dashboard (hoặc trang admin chính)
-        }
-        else {
+        } else {
             req.flash('error_msg', 'Bạn không có quyền truy cập vào trang quản trị.');
             return res.redirect('/admin/auth/login');
         }
