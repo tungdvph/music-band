@@ -1,12 +1,13 @@
 // src/app/admin/routes/bookings.js
 import express from 'express';
 import * as bookingController from '../controllers/BookingController.js'; // Sửa đường dẫn
-// import { requireAdmin } from '../../middleware/authMiddleware.js'; // Bỏ comment khi cần
+import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Middleware kiểm tra quyền admin (Nếu cần)
-// router.use(requireAdmin);
+// Áp dụng middleware cho tất cả các route trong file này
+router.use(requireLogin);
+router.use(requireAdmin);
 
 // Route quản lý bookings
 router.get('/', bookingController.index);

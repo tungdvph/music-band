@@ -1,12 +1,13 @@
 // src/app/admin/routes/members.js (Đã sửa)
 import express from 'express';
 import * as membersController from '../controllers/MembersController.js'; // Sửa đường dẫn
-import { requireAdmin } from '../../middleware/authMiddleware.js'; // Bỏ comment và sửa đường dẫn nếu bạn dùng middleware
+import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Middleware kiểm tra quyền admin (Nếu cần)
-// router.use(requireAdmin); // Bỏ comment nếu dùng
+// Áp dụng middleware cho tất cả các route trong file này
+router.use(requireLogin);
+router.use(requireAdmin);
 
 // Route quản lý thành viên
 router.get('/', membersController.index);

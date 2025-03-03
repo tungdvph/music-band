@@ -1,11 +1,12 @@
 // src/app/admin/routes/dashboard.js
 import express from 'express';
-import * as dashboardController from '../../controllers/DashboardController.js'; // Sửa đường dẫn
-import { requireAdmin } from '../../../middleware/authMiddleware.js'; // Sửa đường dẫn,
+import * as dashboardController from '../../controllers/DashboardController.js';
+import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Middleware kiểm tra quyền admin (Nếu cần)
+// Áp dụng middleware cho tất cả các route trong file này
+router.use(requireLogin);
 router.use(requireAdmin);
 
 // Route cho dashboard
