@@ -1,7 +1,5 @@
-// src/app/admin/controllers/MembersController.js
 import MemberService from '../services/MemberService.js';
 import { validationResult } from 'express-validator';
-import Band from '../../models/Band.js';
 import BandService from '../services/BandService.js'; // Import BandService
 
 // Lấy danh sách tất cả thành viên (cho trang index)
@@ -43,7 +41,7 @@ export const store = async (req, res, next) => {
     }
 
     try {
-        const newMember = await MemberService.createMember(req.body);
+        const newMember = await MemberService.createMember(req.body, req); // Truyền req vào
         res.redirect('/admin/members');
     } catch (error) {
         next(error);
@@ -55,7 +53,7 @@ export const show = async (req, res, next) => {
     try {
         const member = await MemberService.getMemberBySlug(req.params.slug);
         if (!member) {
-            return res.status(404).render('error', { message: 'Không tìm thấy thành viên' });
+            return res.status(404).render('error', { message: 'Không tìm thấy thành viên', layout: 'admin' });
         }
         res.render('members/show', { title: member.name, member, layout: 'admin' }); // SỬA Ở ĐÂY
     } catch (error) {
@@ -69,7 +67,7 @@ export const edit = async (req, res, next) => {
         const member = await MemberService.getMemberBySlug(req.params.slug);
         const bands = await BandService.getAllBands();
         if (!member) {
-            return res.status(404).render('error', { message: 'Không tìm thấy thành viên' });
+            return res.status(404).render('error', { message: 'Không tìm thấy thành viên', layout: 'admin' });
         }
         res.render('members/edit', { title: 'Chỉnh sửa thành viên', member, bands, layout: 'admin' }); // SỬA Ở ĐÂY
     } catch (error) {
@@ -84,7 +82,7 @@ export const update = async (req, res, next) => {
         try {
             const member = await MemberService.getMemberBySlug(req.params.slug); // Lấy thông tin member
             const bands = await BandService.getAllBands();
-            return res.status(400).render('members/edit', {  // SỬA Ở ĐÂY
+            return res.status(400).render('members/edit', {  // SỬA Ở ĐÂY
                 title: 'Chỉnh sửa thành viên',
                 errors: errors.array(),
                 member: { ...member, ...req.body }, // Gộp thông tin cũ và mới
@@ -97,9 +95,9 @@ export const update = async (req, res, next) => {
     }
 
     try {
-        const updatedMember = await MemberService.updateMember(req.params.slug, req.body);
+        const updatedMember = await MemberService.updateMember(req.params.slug, req.body, req); // Truyền req vào
         if (!updatedMember) {
-            return res.status(404).render('error', { message: 'Không tìm thấy thành viên' });
+            return res.status(404).render('error', { message: 'Không tìm thấy thành viên', layout: 'admin' });
         }
         res.redirect(`/admin/members/${updatedMember.slug}`);
     } catch (error) {
@@ -112,7 +110,7 @@ export const confirmDelete = async (req, res, next) => {
     try {
         const member = await MemberService.getMemberBySlug(req.params.slug);
         if (!member) {
-            return res.status(404).render('error', { message: 'Không tìm thấy thành viên' });
+            return res.status(404).render('error', { message: 'Không tìm thấy thành viên', layout: 'admin' });
         }
         res.render('members/confirm-delete', { title: 'Xác nhận xóa', member, layout: 'admin' }); // SỬA Ở ĐÂY
     } catch (error) {
@@ -125,7 +123,7 @@ export const destroy = async (req, res, next) => {
     try {
         const result = await MemberService.deleteMember(req.params.slug);
         if (!result) {
-            return res.status(404).render('error', { message: 'Không tìm thấy thành viên' });
+            return res.status(404).render('error', { message: 'Không tìm thấy thành viên', layout: 'admin' });
         }
         res.redirect('/admin/members');
     } catch (error) {

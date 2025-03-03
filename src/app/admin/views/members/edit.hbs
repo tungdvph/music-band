@@ -11,7 +11,7 @@
     </div>
     {{/if}}
 
-    <form action="/admin/members/{{member.slug}}?_method=PUT" method="POST">
+    <form action="/admin/members/{{member.slug}}?_method=PUT" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Tên:</label>
             <input type="text" id="name" name="name" class="form-control" value="{{member.name}}" required>
@@ -21,8 +21,18 @@
             <input type="text" id="role" name="role" class="form-control" value="{{member.role}}">
         </div>
         <div class="form-group">
-            <label for="image">Link ảnh:</label>
-            <input type="text" id="image" name="image" class="form-control" value="{{member.image}}">
+            <label>Ảnh hiện tại:</label>
+            {{#if member.image}}
+            <div>
+                <img src="/{{member.image}}" alt="Ảnh hiện tại" style="max-width: 200px; max-height: 200px;">
+            </div>
+            {{else}}
+            <p>Không có ảnh</p>
+            {{/if}}
+        </div>
+        <div class="form-group">
+            <label for="image">Chọn ảnh mới:</label>
+            <input type="file" id="image" name="image" class="form-control-file">
         </div>
         <div class="form-group">
             <label for="bio">Tiểu sử:</label>

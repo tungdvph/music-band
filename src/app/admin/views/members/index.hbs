@@ -1,7 +1,7 @@
 {{!-- src/app/admin/views/members/index.hbs --}}
 {{!< layouts/admin}} <h1>Quản Lý Thành Viên</h1>
 
-    <a href="/admin/members/create" class="btn btn-success mb-3">Thêm Thành Viên</a> {{!-- Đường dẫn ĐÚNG --}}
+    <a href="/admin/members/create" class="btn btn-success mb-3">Thêm Thành Viên</a>
 
     {{#if members}}
     <table class="table table-striped">
@@ -17,7 +17,8 @@
             {{#each members}}
             <tr>
                 <td>
-                    <img src="{{this.image}}" alt="{{this.name}}" width="50" height="50" style="object-fit: cover;">
+                    <img src="/{{#if this.image}}{{this.image}}{{else}}no-image.jpg{{/if}}" alt="{{this.name}}"
+                        width="50" height="50" style="object-fit: cover;">
                 </td>
                 <td>{{this.name}}</td>
                 <td>{{this.role}}</td>
