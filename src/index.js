@@ -87,8 +87,7 @@ async function startServer() {
         app.set('view engine', '.hbs');
 
         app.set('views', [
-            path.join(__dirname, 'app', 'admin', 'views'),
-            path.join(__dirname, 'app', 'site', 'views')
+            path.join(__dirname, 'app', 'admin', 'views')
         ]);
 
         app.use('/', routes);
