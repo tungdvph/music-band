@@ -90,7 +90,22 @@ async function startServer() {
             path.join(__dirname, 'app', 'admin', 'views')
         ]);
 
+        // --- Phần quan trọng: Thêm cấu hình để phục vụ ứng dụng React ---
+
+        // 1. Các routes cho phần ADMIN (giữ nguyên, nhưng đặt trước phần serve React)
         app.use('/', routes);
+
+
+        // 2. Serve static files từ thư mục 'build' của React (SAU các API routes)
+        app.use(express.static(path.join(__dirname, 'client', 'my-musicband-client', 'build')));
+
+        // 3. Cho tất cả các request khác (không phải API, không phải file tĩnh),
+        //    trả về file 'index.html' của React. React Router sẽ xử lý routing.
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, 'client', 'my-musicband-client', 'build', 'index.html'));
+        });
+
+        // --- Kết thúc phần cấu hình cho React ---
 
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);
@@ -102,8 +117,7 @@ async function startServer() {
 
 startServer();
 
-
-// Middleware xử lý lỗi chung
+// Middleware xử lý lỗi chung (giữ nguyên)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {
