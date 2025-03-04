@@ -1,0 +1,21 @@
+/* client/src/components/NewsItem.css */
+.news-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.news-image {
+    width: 100%;
+    height: auto;
+}
+
+.news-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.news-link {
+    text-decoration: none;
+    color: blue;
+}

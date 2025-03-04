@@ -1,0 +1,16 @@
+/* client/src/components/ScheduleItem.css */
+.schedule-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.schedule-date {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.schedule-link {
+    text-decoration: none;
+    color: blue;
+}

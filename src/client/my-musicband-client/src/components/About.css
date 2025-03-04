@@ -1,0 +1,23 @@
+/* client/src/components/About.css */
+.about {
+    padding: 20px;
+    background-color: #f8f8f8;
+    /* Màu nền ví dụ */
+    border-bottom: 1px solid #ddd;
+    /* Đường viền ví dụ */
+}
+
+.about h2 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color: #333;
+    /* Màu tiêu đề ví dụ */
+}
+
+.about p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #555;
+    /* Màu chữ ví dụ */
+    margin-bottom: 1em;
+}

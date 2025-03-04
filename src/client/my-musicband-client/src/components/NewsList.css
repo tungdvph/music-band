@@ -1,0 +1,10 @@
+/* client/src/components/NewsList.css */
+.news-list {
+    padding: 20px;
+}
+
+.news-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
