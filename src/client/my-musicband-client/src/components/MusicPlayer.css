@@ -1,0 +1,105 @@
+/* // src/components/MusicPlayer.css */
+/* // src/components/MusicPlayer.css */
+
+.music-player-container {
+    width: 80%;
+    /* Điều chỉnh độ rộng theo ý muốn */
+    max-width: 800px;
+    /* Giới hạn độ rộng tối đa */
+    margin: 20px auto;
+    /* Căn giữa và tạo khoảng cách trên dưới */
+    padding: 20px;
+    background-color: #f8f8f8;
+    /* Màu nền nhạt */
+    border-radius: 10px;
+    /* Bo tròn góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
+}
+
+.music-player-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    /* Màu chữ đậm hơn */
+}
+
+.song-list {
+    list-style: none;
+    /* Bỏ dấu chấm đầu dòng của danh sách */
+    padding: 0;
+}
+
+.song-item {
+    display: flex;
+    /* Sử dụng Flexbox để dễ dàng căn chỉnh */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    /* Đường viền nhẹ */
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    /* Hiệu ứng chuyển màu khi hover */
+}
+
+.song-item:hover {
+    background-color: #f0f0f0;
+    /* Màu nền thay đổi khi hover */
+}
+
+.song-image {
+    width: 80px;
+    /* Kích thước ảnh */
+    height: 80px;
+    border-radius: 5px;
+    /* Bo tròn ảnh */
+    margin-right: 20px;
+    /* Khoảng cách giữa ảnh và thông tin */
+    object-fit: cover;
+    /* Đảm bảo ảnh không bị méo */
+}
+
+.song-info {
+    flex-grow: 1;
+    /* Chiếm phần không gian còn lại */
+}
+
+.song-info h2 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.song-info p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.audio-player {
+    width: 100%;
+    /* Chiều rộng tối đa */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .music-player-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .song-item {
+        flex-direction: column;
+        /* Đổi thành cột trên màn hình nhỏ */
+        align-items: flex-start;
+    }
+
+    .song-image {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+}
