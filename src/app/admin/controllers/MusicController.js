@@ -1,6 +1,7 @@
 // src/app/admin/controllers/MusicController.js
 import AdminMusicService from '../services/MusicService.js';
 import { validationResult } from 'express-validator';
+import Song from '../../models/Song.js';
 
 export const index = async (req, res, next) => {
     try {
@@ -102,3 +103,14 @@ export const destroy = async (req, res, next) => {
         next(error)
     }
 }
+
+// Thêm hàm này:
+export const getSongsForClient = async (req, res) => {
+    try {
+        const songs = await Song.find({}).select('title artist imageUrl audioUrl slug'); // Chỉ lấy các trường cần thiết
+        res.json(songs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi server khi lấy danh sách bài hát.' });
+    }
+};

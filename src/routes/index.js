@@ -11,6 +11,7 @@ import adminnews from '../app/admin/routes/news.js';
 import adminAuthRouter from '../app/admin/routes/auth.js';
 import adminUsersRouter from '../app/admin/routes/users.js'; // Đã thêm
 import { requireLogin, requireAdmin } from '../app/middleware/authMiddleware.js'; //
+import * as MusicController from '../app/admin/controllers/MusicController.js'; // Import MusicController
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use('/admin/bookings', requireLogin, adminbookings);
 router.use('/admin/news', requireLogin, adminnews);
 router.use('/admin/users', requireLogin, requireAdmin, adminUsersRouter); // Cần cả requireLogin và requireAdmin
 
+router.get('/api/songs', MusicController.getSongsForClient);
 
 export default router;
