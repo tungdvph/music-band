@@ -27,10 +27,6 @@ async function startServer() {
         app.use(express.json());
         app.use(methodOverride('_method'));
 
-        console.log("Static files path:", path.join(__dirname, 'public'));
-
-        app.use(express.static(path.join(__dirname, 'public')));
-
         // Cấu hình express-session
         app.use(session({
             secret: process.env.SESSION_SECRET, // Lấy từ .env
@@ -85,27 +81,26 @@ async function startServer() {
 
         app.engine('.hbs', hbs.engine);
         app.set('view engine', '.hbs');
+        app.set('views', path.join(__dirname, 'app', 'admin', 'views'));
 
-        app.set('views', [
-            path.join(__dirname, 'app', 'admin', 'views')
-        ]);
 
-        // --- Phần quan trọng: Thêm cấu hình để phục vụ ứng dụng React ---
+        // --- Cấu hình cho cả admin và React ---
 
-        // 1. Các routes cho phần ADMIN (giữ nguyên, nhưng đặt trước phần serve React)
+        // 1. Các routes cho phần ADMIN (đặt lên đầu)
         app.use('/', routes);
 
+        // 2. Serve static files cho phần ADMIN (từ thư mục 'public')
+        app.use(express.static(path.join(__dirname, 'public')));
 
-        // 2. Serve static files từ thư mục 'build' của React (SAU các API routes)
-        app.use(express.static(path.join(__dirname, 'client', 'my-musicband-client', 'build')));
+        // 3. Serve static files cho React (từ thư mục 'build')
+        app.use(express.static(path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build')));
 
-        // 3. Cho tất cả các request khác (không phải API, không phải file tĩnh),
-        //    trả về file 'index.html' của React. React Router sẽ xử lý routing.
+        // 4. "Catch-all" route cho React (trả về index.html, đặt cuối cùng)
         app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, 'client', 'my-musicband-client', 'build', 'index.html'));
+            res.sendFile(path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build', 'index.html'));
         });
 
-        // --- Kết thúc phần cấu hình cho React ---
+        // --- Kết thúc phần cấu hình ---
 
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);
@@ -117,7 +112,7 @@ async function startServer() {
 
 startServer();
 
-// Middleware xử lý lỗi chung (giữ nguyên)
+// Middleware xử lý lỗi chung
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {

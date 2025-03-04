@@ -1,0 +1,34 @@
+/* src/components/Navbar.css */
+.navbar {
+    background-color: #333;
+    /* Màu nền */
+    padding: 1rem;
+    /* Khoảng cách đệm */
+    color: white;
+    /* Màu chữ */
+}
+
+.nav-list {
+    list-style: none;
+    /* Bỏ dấu chấm đầu dòng */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    /* Dàn hàng ngang */
+    justify-content: space-around;
+    /* Căn đều các mục */
+}
+
+.nav-item a {
+    color: white;
+    /* Màu chữ cho liên kết */
+    text-decoration: none;
+    /* Bỏ gạch chân */
+    padding: 0.5rem 1rem;
+    display: block;
+    /* Để padding hoạt động đúng */
+}
+
+.nav-item a:hover {
+    background-color: #595959;
+}
