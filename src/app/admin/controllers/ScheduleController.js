@@ -1,6 +1,7 @@
 // src/app/admin/controllers/ScheduleController.js
-import ScheduleService from '../services/ScheduleService.js'; // Sửa import
+import ScheduleService from '../services/ScheduleService.js';
 import { validationResult } from 'express-validator';
+import Schedule from '../../models/Schedule.js';
 
 export const index = async (req, res, next) => {
     try {
@@ -113,3 +114,27 @@ export const destroy = async (req, res, next) => {
         next(error)
     }
 };
+
+// Thêm hàm lấy danh sách cho client
+export const getScheduleForClient = async (req, res) => {
+    try {
+        const schedules = await ScheduleService.getAllSchedules(); // Dùng service
+        res.json(schedules);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi server khi lấy danh sách lịch diễn.' });
+    }
+};
+// Thêm hàm lấy chi tiết cho client
+export const getScheduleDetail = async (req, res) => {
+    try {
+        const schedule = await ScheduleService.getScheduleBySlug(req.params.slug)
+        if (!schedule) {
+            return res.status(404).json({ message: 'Không tìm thấy lịch diễn' })
+        }
+        res.json(schedule)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Lỗi server' })
+    }
+}

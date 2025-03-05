@@ -1,8 +1,6 @@
-// src/app/site/services/SiteScheduleService.js
-
 import Schedule from '../../models/Schedule.js';
 
-class AdminScheduleService {
+class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
   async getAllSchedules() {
     try {
       const schedules = await Schedule.find({}).lean();
@@ -12,9 +10,9 @@ class AdminScheduleService {
     }
   }
 
-  async getScheduleById(id) {
+  async getScheduleBySlug(slug) {
     try {
-      const schedule = await Schedule.findById(id).lean();
+      const schedule = await Schedule.findOne({ slug }).lean();
       return schedule;
     } catch (error) {
       throw new Error('Lỗi khi lấy thông tin lịch trình: ' + error.message);
@@ -30,9 +28,9 @@ class AdminScheduleService {
       throw new Error('Lỗi khi tạo lịch trình: ' + error.message);
     }
   }
-  async updateSchedule(id, updatedData) {
+  async updateSchedule(slug, updatedData) {
     try {
-      const updateSchedule = await Schedule.findByIdAndUpdate(id, updatedData, {
+      const updateSchedule = await Schedule.findOneAndUpdate({ slug: slug }, updatedData, {
         new: true,
         runValidators: true,
       }).lean();
@@ -42,13 +40,13 @@ class AdminScheduleService {
       throw new Error('Lỗi khi cập nhật lịch trình: ' + error.message);
     }
   }
-  async deleteSchedule(id) {
+  async deleteSchedule(slug) {
     try {
-      const result = await Schedule.findByIdAndDelete(id).lean();
+      const result = await Schedule.findOneAndDelete({ slug: slug }).lean();
       return result;
     } catch (error) {
       throw new Error('Lỗi khi xoá lịch trình: ' + error.message);
     }
   }
 }
-export default new AdminScheduleService();
+export default new ScheduleService();
