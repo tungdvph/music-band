@@ -18,12 +18,8 @@ class AuthService {
                 return { success: false, message: 'Tên đăng nhập hoặc mật khẩu không đúng.' };
             }
 
-            // 3. Kiểm tra role (tùy chọn, nhưng nên có)
-            if (user.role !== 'admin') {
-                return { success: false, message: 'Bạn không có quyền truy cập.' };
-            }
-
-            // 4. Trả về thông tin user (loại bỏ mật khẩu)
+            // 3. Trả về thông tin user (loại bỏ mật khẩu)
+            // Bỏ phần kiểm tra role
             return {
                 success: true,
                 user: {
@@ -39,6 +35,7 @@ class AuthService {
             console.error("Lỗi trong AuthService.authenticateUser:", error);
             return { success: false, message: 'Đã xảy ra lỗi trong quá trình xác thực.' };
         }
+
     }
     async changePassword(userId, currentPassword, newPassword) {
         try {
