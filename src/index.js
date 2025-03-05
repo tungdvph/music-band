@@ -22,6 +22,7 @@ const port = process.env.PORT || 3000;
 async function startServer() {
     try {
         await db.connect();
+        console.log('Kết nối MongoDB thành công!'); // Log khi kết nối thành công
 
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
@@ -56,6 +57,7 @@ async function startServer() {
                 sum: (a, b) => a + b,
                 eq: (a, b) => a === b,
                 isObject: value => typeof value === 'object' && value !== null,
+                isArray: value => Array.isArray(value), // Sửa DeprecationWarning
                 dateFormat: (date, format) => {
                     if (!date) return '';
                     return moment(date).format(format);
@@ -93,11 +95,14 @@ async function startServer() {
         app.use(express.static(path.join(__dirname, 'public')));
 
         // 3. Serve static files cho React (từ thư mục 'build')
-        app.use(express.static(path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build')));
+        const reactBuildPath = path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build');
+        app.use(express.static(reactBuildPath));
+        // Cấu hình để serve thư mục uploads như static files
+        app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
         // 4. "Catch-all" route cho React (trả về index.html, đặt cuối cùng)
         app.get('*', (req, res) => {
-            res.sendFile(path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build', 'index.html'));
+            res.sendFile(path.join(reactBuildPath, 'index.html'));
         });
 
         // --- Kết thúc phần cấu hình ---
@@ -112,7 +117,7 @@ async function startServer() {
 
 startServer();
 
-// Middleware xử lý lỗi chung
+// Middleware xử lý lỗi chung (đặt CUỐI CÙNG)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {

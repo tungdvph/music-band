@@ -2,6 +2,11 @@
 import Member from '../../models/Member.js';
 import Band from '../../models/Band.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs'; // Import module fs để xóa file
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class MemberService {
     async getAllMembers() {
@@ -29,7 +34,7 @@ class MemberService {
             // Xử lý upload ảnh
             let imagePath = null;
             if (req.file) {
-                // Lưu đường dẫn tương đối, bắt đầu từ 'public'
+                // Tạo đường dẫn tương đối, an toàn và tương thích đa nền tảng
                 imagePath = path.join('uploads', req.file.filename).replace(/\\/g, "/");
             }
 
@@ -58,7 +63,7 @@ class MemberService {
             // Xử lý upload ảnh
             let imagePath = null;
             if (req.file) {
-                // Lưu đường dẫn tương đối
+                // Tạo đường dẫn tương đối, an toàn và tương thích đa nền tảng
                 imagePath = path.join('uploads', req.file.filename).replace(/\\/g, "/");
             }
 
@@ -68,7 +73,7 @@ class MemberService {
             }
             const newData = {
                 ...updatedData,
-                image: imagePath || updatedData.image, // Cập nhật ảnh mới, hoặc giữ nguyên ảnh cũ
+                image: imagePath || updatedData.image, // Cập nhật đường dẫn ảnh mới, hoặc giữ nguyên cũ
             }
 
             const updatedMember = await Member.findOneAndUpdate(
@@ -84,10 +89,19 @@ class MemberService {
             throw new Error('Lỗi khi cập nhật thành viên: ' + error.message);
         }
     }
+
     async deleteMember(slug) {
         try {
-            const result = await Member.findOneAndDelete({ slug: slug }).lean();
-            return result; // Returns the deleted document (or null if not found)
+            const member = await Member.findOneAndDelete({ slug: slug }).lean();
+            if (member && member.image) {
+                const imagePath = path.join(__dirname, '..', '..', 'public', member.image); // Đường dẫn tuyệt đối
+                try {
+                    fs.unlinkSync(imagePath); // Xóa file đồng bộ
+                } catch (err) {
+                    console.error("Lỗi khi xóa file ảnh:", err); // Log lỗi, không throw lại
+                }
+            }
+            return member; // Trả về document đã xóa (hoặc null)
         } catch (error) {
             throw new Error('Lỗi khi xóa thành viên: ' + error.message);
         }

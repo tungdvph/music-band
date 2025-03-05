@@ -70,3 +70,12 @@ export const destroy = async (req, res, next) => {
         next(error)
     }
 }
+//createContact
+export const createContact = async (req, res, next) => {
+    try {
+        const newContact = await ContactService.createContact(req.body);
+        res.status(201).json(newContact); // Trả về 201 Created và dữ liệu liên hệ mới
+    } catch (error) {
+        next(error); // Chuyển lỗi cho middleware xử lý lỗi
+    }
+};

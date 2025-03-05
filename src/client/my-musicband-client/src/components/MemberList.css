@@ -1,0 +1,8 @@
+.member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* Hoặc space-between, center, tùy bạn */
+    gap: 20px;
+    /* Khoảng cách giữa các item */
+}

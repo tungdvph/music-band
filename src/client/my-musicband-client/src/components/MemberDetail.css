@@ -1,0 +1,30 @@
+.member-detail {
+    text-align: center;
+    /* Căn giữa nội dung */
+    padding: 20px;
+}
+
+.member-detail-image {
+    width: 200px;
+    /* Điều chỉnh kích thước ảnh */
+    height: auto;
+    border-radius: 50%;
+    /* Bo tròn ảnh (tùy chọn) */
+    margin-bottom: 20px;
+}
+
+.member-detail-name {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.member-detail-role {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.member-detail-bio {
+    line-height: 1.6;
+    /* Tăng khoảng cách dòng */
+}

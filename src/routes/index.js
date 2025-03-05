@@ -16,6 +16,8 @@ import * as MusicController from '../app/admin/controllers/MusicController.js';
 import * as NewsController from '../app/admin/controllers/NewsController.js';
 import * as ScheduleController from '../app/admin/controllers/ScheduleController.js';
 import * as BookingController from '../app/admin/controllers/BookingController.js';
+import * as MemberController from '../app/admin/controllers/MembersController.js';
+import * as ContactController from '../app/admin/controllers/ContactController.js';
 
 const router = express.Router();
 
@@ -37,6 +39,10 @@ router.get('/api/news/:slug', NewsController.getNewsDetail);
 router.get('/api/schedules', ScheduleController.getScheduleForClient);
 router.get('/api/schedules/:slug', ScheduleController.getScheduleDetail);
 router.post('/api/bookings', BookingController.createBooking);
+router.get('/api/members', MemberController.getMembersForClient); // Lấy danh sách
+router.get('/api/members/:slug', MemberController.getMemberDetail); // Lấy chi tiết
+
+router.post('/api/contacts', ContactController.createContact);
 
 // Error handling middleware (PHẢI đặt cuối cùng)
 router.use((err, req, res, next) => {
