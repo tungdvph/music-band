@@ -1,12 +1,25 @@
 {{!-- src/app/admin/views/users/confirm-delete.hbs --}}
-{{!< layouts/admin}} <h1 class="mt-4 mb-4">Xác nhận xóa người dùng</h1>
+{{!< layouts/admin}} <h2>Xác Nhận Xóa Người Dùng</h2>
 
-    <p class="alert alert-danger">
-        Bạn có chắc chắn muốn xóa người dùng <strong>{{user.username}}</strong> ({{user.email}})? Hành động này không
-        thể hoàn tác.
-    </p>
+    <p>Bạn có chắc chắn muốn xóa người dùng này không? Hành động này <strong>không thể hoàn tác</strong>.</p>
+
+    <dl class="row">
+        <dt class="col-sm-3">Tên đăng nhập:</dt>
+        <dd class="col-sm-9">{{user.username}}</dd>
+
+        <dt class="col-sm-3">Email:</dt>
+        <dd class="col-sm-9">{{user.email}}</dd>
+
+        {{#if user.fullName}}
+        <dt class="col-sm-3">Họ và tên:</dt>
+        <dd class="col-sm-9">{{user.fullName}}</dd>
+        {{/if}}
+
+        <dt class="col-sm-3">Vai trò:</dt>
+        <dd class="col-sm-9">{{user.role}}</dd>
+    </dl>
 
     <form action="/admin/users/{{user._id}}?_method=DELETE" method="POST">
-        <button type="submit" class="btn btn-danger">Xóa</button>
-        <a href="/admin/users" class="btn btn-secondary">Hủy</a>
+        <button type="submit" class="btn btn-danger">Xóa Người Dùng</button>
+        <a href="/admin/users" class="btn btn-secondary">Hủy Bỏ</a>
     </form>

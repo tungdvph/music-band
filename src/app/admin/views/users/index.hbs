@@ -1,14 +1,14 @@
-{{!-- src/app/views/admin/users/index.hbs --}}
+{{!-- src/app/admin/views/users/index.hbs --}}
 {{!< layouts/admin}} <h1>Quản Lý Người Dùng</h1>
 
-    <a href="/admin/users/create" class="btn btn-primary">Thêm Người Dùng</a>
+    <a href="/admin/users/create" class="btn btn-primary mb-3">Thêm Người Dùng</a>
 
     {{#if users}}
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Tên</th>
+                <th>Tên đăng nhập</th>
                 <th>Email</th>
                 <th>Vai trò</th>
                 <th>Thao tác</th>
@@ -17,23 +17,15 @@
         <tbody>
             {{#each users}}
             <tr>
-                <td>{{this._id}}</td> {{!-- Sửa thành this._id --}}
-                <td>{{this.username}}</td> {{!-- Sửa thành this.username --}}
+                <td>{{this._id}}</td>
+                <td>{{this.username}}</td>
                 <td>{{this.email}}</td>
                 <td>{{this.role}}</td>
                 <td>
                     <a href="/admin/users/{{this._id}}" class="btn btn-info btn-sm">Xem</a>
                     <a href="/admin/users/{{this._id}}/edit" class="btn btn-warning btn-sm">Sửa</a>
-                    {{!-- Thêm form để xóa, sử dụng method-override --}}
-                    <form action="/admin/users/{{this._id}}?_method=DELETE" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">Xóa</button>
-                    </form>
+                    <button class="btn btn-danger btn-sm delete-user" data-id="{{this._id}}">Xóa</button>
                 </td>
-            </tr>
-            {{else}}
-            <tr>
-                <td colspan="5">Không có người dùng nào.</td>
             </tr>
             {{/each}}
         </tbody>
@@ -41,3 +33,17 @@
     {{else}}
     <p>Không có người dùng nào.</p>
     {{/if}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.delete-user');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định (submit form)
+                    const userId = this.dataset.id; // Lấy ID từ thuộc tính data-id
+                    window.location.href = `/admin/users/${userId}/delete`; // Chuyển hướng đến trang xác nhận
+                });
+            });
+        });
+    </script>
