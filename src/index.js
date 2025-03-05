@@ -1,3 +1,4 @@
+// src/index.js
 import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
@@ -10,6 +11,7 @@ import moment from 'moment';
 import session from 'express-session';
 import flash from 'connect-flash';
 import fs from 'fs';
+import { index } from './app/admin/controllers/HomeController.js';
 
 dotenv.config();
 
@@ -94,11 +96,14 @@ async function startServer() {
         // 2. Serve static files cho phần ADMIN (từ thư mục 'public')
         app.use(express.static(path.join(__dirname, 'public')));
 
-        // 3. Serve static files cho React (từ thư mục 'build')
-        const reactBuildPath = path.join(__dirname, '..', '..', 'client', 'my-musicband-client', 'build');
+        // 3. Serve static files cho React (từ thư mục 'public')
+        const rootDir = path.resolve(); // Lấy đường dẫn gốc của ứng dụng
+        const reactBuildPath = path.join(rootDir, 'client', 'my-musicband-client', 'public'); // Đường dẫn tuyệt đối
         app.use(express.static(reactBuildPath));
-        // Cấu hình để serve thư mục uploads như static files
-        app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+
+        // Cấu hình để serve thư mục uploads như static files (cũng nên dùng đường dẫn tuyệt đối)
+        const uploadsPath = path.join(rootDir, 'src', 'public', 'uploads'); // Giả sử uploads nằm trong src/public
+        app.use('/uploads', express.static(uploadsPath));
 
         // 4. "Catch-all" route cho React (trả về index.html, đặt cuối cùng)
         app.get('*', (req, res) => {
