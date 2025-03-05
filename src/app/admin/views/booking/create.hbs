@@ -1,54 +1,73 @@
-{{!-- src/app/site/views/booking/create.hbs --}}
-<h2>Đặt lịch biểu diễn</h2>
+{{!-- src/app/admin/views/booking/create.hbs --}}
+{{!< layouts/admin}} <h2>Đặt lịch biểu diễn</h2>
 
-{{#if errors}}
-<div class="alert alert-danger">
-    <ul>
-        {{#each errors}}
-        <li>{{this.msg}}</li> {{!-- Hoặc this.message, tùy thuộc vào cấu trúc lỗi --}}
-        {{/each}}
-    </ul>
-</div>
-{{/if}}
-
-<form action="/booking" method="POST">
-    <div>
-        <label for="name">Tên:</label>
-        <input type="text" id="name" name="name" value="{{#if errors}}{{body.name}}{{/if}}" required>
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{#if errors}}{{body.email}}{{/if}}" required>
-    </div>
-    <div>
-        <label for="phone">Số điện thoại:</label>
-        <input type="tel" id="phone" name="phone" value="{{#if errors}}{{body.phone}}{{/if}}" required>
-    </div>
-    <div>
-        <label for="date">Ngày:</label>
-        <input type="date" id="date" name="date" value="{{#if errors}}{{body.date}}{{/if}}" required>
-    </div>
-    <div>
-        <label for="time">Thời gian:</label>
-        <input type="time" id="time" name="time" value="{{#if errors}}{{body.time}}{{/if}}" required>
-        {{!-- Sửa type="text" thành type="time" --}}
-    </div>
-    <div>
-        <label for="venue">Địa điểm:</label>
-        <input type="text" id="venue" name="venue" value="{{#if errors}}{{body.venue}}{{/if}}" required>
-    </div>
-    <div>
-        <label for="message">Tin nhắn:</label>
-        <textarea id="message" name="message">{{#if errors}}{{body.message}}{{/if}}</textarea>
-    </div>
-    <div>
-        <label for="band">Band:</label>
-        <select name="band" id="band" required>
-            <option value="">Chọn ban nhạc</option> {{!-- Thêm option mặc định --}}
-            {{#each bands}}
-            <option value="{{this._id}}">{{this.name}}</option>
+    {{#if errors}}
+    <div class="alert alert-danger">
+        <ul>
+            {{#each errors}}
+            <li>{{this.msg}}</li>
             {{/each}}
-        </select>
+        </ul>
     </div>
-    <button type="submit">Đặt lịch</button>
-</form>
+    {{/if}}
+
+    <form action="/admin/bookings" method="POST">
+        <div>
+            <label for="eventType">Loại sự kiện:</label>
+            <input type="text" id="eventType" name="eventType" value="{{#if errors}}{{body.eventType}}{{/if}}" required>
+        </div>
+        <div>
+            <label for="date">Ngày:</label>
+            <input type="date" id="date" name="date" value="{{#if errors}}{{body.date}}{{/if}}" required>
+        </div>
+        <div>
+            <label for="time">Giờ:</label>
+            <input type="time" id="time" name="time" value="{{#if errors}}{{body.time}}{{/if}}" required>
+        </div>
+        <div>
+            <label for="location">Địa điểm:</label>
+            <input type="text" id="location" name="location" value="{{#if errors}}{{body.location}}{{/if}}" required>
+        </div>
+        <div>
+            <label for="venue">Tên địa điểm:</label>
+            <input type="text" id="venue" name="venue" value="{{#if errors}}{{body.venue}}{{/if}}" required>
+        </div>
+        <div>
+            <label for="duration">Thời lượng (giờ):</label>
+            <input type="number" id="duration" name="duration" value="{{#if errors}}{{body.duration}}{{/if}}">
+        </div>
+        <div>
+            <label for="audienceSize">Số lượng khán giả dự kiến:</label>
+            <input type="number" id="audienceSize" name="audienceSize"
+                value="{{#if errors}}{{body.audienceSize}}{{/if}}">
+        </div>
+        <div>
+            <label for="requirements">Yêu cầu:</label>
+            <textarea name="requirements" id="requirements" cols="30"
+                rows="10">{{#if errors}}{{body.requirements}}{{/if}}</textarea>
+        </div>
+        <div>
+            <label for="budget">Ngân sách:</label>
+            <input type="number" id="budget" name="budget" value="{{#if errors}}{{body.budget}}{{/if}}">
+        </div>
+        <div>
+            <label for="contactName">Tên người liên hệ:</label>
+            <input type="text" id="contactName" name="contactName" value="{{#if errors}}{{body.contactName}}{{/if}}"
+                required>
+        </div>
+        <div>
+            <label for="contactEmail">Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail" value="{{#if errors}}{{body.contactEmail}}{{/if}}"
+                required>
+        </div>
+        <div>
+            <label for="contactPhone">Số điện thoại:</label>
+            <input type="tel" id="contactPhone" name="contactPhone" value="{{#if errors}}{{body.contactPhone}}{{/if}}"
+                required>
+        </div>
+        <div>
+            <label for="message">Tin nhắn:</label>
+            <textarea name="message" id="message" cols="30" rows="10">{{#if errors}}{{body.message}}{{/if}}</textarea>
+        </div>
+        <button type="submit">Đặt lịch</button>
+    </form>

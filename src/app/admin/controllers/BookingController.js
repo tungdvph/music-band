@@ -129,3 +129,18 @@ export const destroy = async (req, res, next) => {// Thêm next
         next(error)
     }
 };
+
+// Xử lý lưu booking mới (POST /api/bookings) - Dùng cho CLIENT  -> ĐỔI TÊN HÀM
+export const createBooking = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+        const newBooking = await BookingService.createBooking(req.body);
+        res.status(201).json({ message: 'Đặt lịch thành công!', booking: newBooking });
+    } catch (error) {
+        next(error);
+    }
+};

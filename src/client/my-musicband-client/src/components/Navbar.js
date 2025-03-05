@@ -22,6 +22,9 @@ function Navbar() {
                 <li className="nav-item">
                     <Link to="/schedule">Schedule</Link> {/* Giả định: ScheduleList là trang lịch trình */}
                 </li>
+                <li className="nav-item">
+                    <Link to="/booking">Đặt lịch</Link> {/* Giả định: ScheduleList là trang lịch trình */}
+                </li>
                 {/* Hero không có khả năng là một trang riêng. Nó thường là 1 component trong trang home */}
                 {/* NewsItem là component con của NewsList, không phải một trang riêng */}
                 {/* ScheduleItem là component con của ScheduleList, không phải một trang riêng */}

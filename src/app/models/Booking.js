@@ -4,18 +4,22 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
-    name: { type: String, required: true }, // Thêm trường này
-    email: { type: String, required: true }, // Thêm trường này
-    phone: { type: String, required: true },  // Thêm trường này
+    eventType: { type: String, required: true }, // Loại sự kiện
     date: { type: Date, required: true },
     time: { type: String, required: true },
+    location: { type: String, required: true },
     venue: { type: String, required: true },
-    message: { type: String }, // Thêm trường này
+    duration: { type: Number }, // Số giờ
+    audienceSize: { type: Number },
+    requirements: { type: String },
+    budget: { type: Number },
+    contactName: { type: String, required: true },  // Tên người liên hệ
+    contactEmail: { type: String, required: true }, // Email
+    contactPhone: { type: String, required: true }, // Số điện thoại
+    message: { type: String },
     status: { type: String, enum: ['pending', 'confirmed', 'canceled'], default: 'pending' },
-    band: { type: Schema.Types.ObjectId, ref: 'Band' }, // populate
-    user: { type: Schema.Types.ObjectId, ref: 'User' }, // Liên kết với User (nếu có)
-    // schedule: { type: Schema.Types.ObjectId, ref: 'Schedule' }, // Tùy chọn
-
+    band: { type: Schema.Types.ObjectId, ref: 'Band' }, // (tùy chọn)
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, // (tùy chọn, nếu có user)
 }, {
     timestamps: true
 });

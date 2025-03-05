@@ -1,23 +1,36 @@
-{{!-- src/app/views/admin/bookings/confirm-delete.hbs --}}
-{{!-- Giữ nguyên, chỉ thay đổi đường dẫn action và nút hủy --}}
-<h2>Xác nhận xóa đặt lịch</h2>
+{{!-- src/app/admin/views/booking/confirm-delete.hbs --}}
+{{!< layouts/admin}} <h2>Xác nhận xóa đặt lịch</h2>
 
-<p>Bạn có chắc chắn muốn xóa đặt lịch này không?</p>
+    <p>Bạn có chắc chắn muốn xóa đặt lịch này không?</p>
 
-{{!-- ... các thông tin booking ... --}}
-<p><strong>Người đặt:</strong> {{booking.name}}</p>
-<p><strong>Email:</strong> {{booking.email}}</p>
-<p><strong>Số điện thoại:</strong> {{booking.phone}}</p>
-<p><strong>Ngày:</strong> {{booking.date}}</p>
-<p><strong>Thời gian:</strong> {{booking.time}}</p>
-<p><strong>Địa điểm:</strong> {{booking.venue}}</p>
-{{#if booking.band}}
-<p><strong>Band:</strong>{{booking.band.name}}</p>
-{{/if}}
-{{#if booking.message}}
-<p><strong>Tin nhắn:</strong> {{booking.message}}</p>
-{{/if}}
-<form action="/admin/bookings/{{booking._id}}?_method=DELETE" method="POST">
-    <button type="submit">Xóa</button>
-    <a href="/admin/bookings">Hủy</a>
-</form>
+    {{!-- Hiển thị thông tin chi tiết của booking --}}
+    <p><strong>Loại sự kiện:</strong> {{booking.eventType}}</p>
+    <p><strong>Ngày:</strong> {{dateFormat booking.date "DD/MM/YYYY"}}</p>
+    <p><strong>Thời gian:</strong> {{booking.time}}</p>
+    <p><strong>Địa điểm:</strong> {{booking.location}}</p>
+    <p><strong>Tên địa điểm:</strong> {{booking.venue}}</p>
+    {{#if booking.duration}}
+    <p><strong>Thời lượng:</strong> {{booking.duration}} giờ</p>
+    {{/if}}
+    {{#if booking.audienceSize}}
+    <p><strong>Số lượng khán giả dự kiến:</strong>{{booking.audienceSize}}</p>
+    {{/if}}
+
+    {{#if booking.requirements}}
+    <p><strong>Yêu cầu: </strong> {{booking.requirements}}</p>
+    {{/if}}
+    {{#if booking.budget}}
+    <p><strong>Ngân sách: </strong>{{booking.budget}}</p>
+    {{/if}}
+    <p><strong>Tên người liên hệ:</strong> {{booking.contactName}}</p>
+    <p><strong>Email:</strong> {{booking.contactEmail}}</p>
+    <p><strong>Số điện thoại:</strong> {{booking.contactPhone}}</p>
+
+    {{#if booking.message}}
+    <p><strong>Tin nhắn:</strong> {{booking.message}}</p>
+    {{/if}}
+
+    <form action="/admin/bookings/{{booking._id}}?_method=DELETE" method="POST">
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a href="/admin/bookings" class="btn btn-secondary">Hủy</a>
+    </form>

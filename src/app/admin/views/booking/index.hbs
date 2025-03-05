@@ -1,45 +1,40 @@
-{{!< layouts/admin}} {{!-- Sử dụng layout admin (nếu có) --}} <h1>Quản Lý Đặt Lịch</h1>
+{{!-- src/app/admin/views/booking/index.hbs --}}
+{{!< layouts/admin}} <h1>Quản Lý Đặt Lịch</h1>
 
-    <a href="/admin/bookings/create" class="btn btn-success">Tạo Booking</a> {{!-- Nút Thêm Booking --}}
+    <a href="/admin/bookings/create" class="btn btn-success">Tạo Booking</a>
 
     {{#if bookings}}
-    <table class="table"> {{!-- Thêm class "table" của Bootstrap (nếu dùng) --}}
+    <table class="table">
         <thead>
             <tr>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
+                <th>Loại sự kiện</th>
                 <th>Ngày</th>
                 <th>Thời gian</th>
                 <th>Địa điểm</th>
+                <th>Tên người liên hệ</th>
+                <th>Số điện thoại</th>
                 <th>Trạng thái</th>
-                <th>Band</th>
-                <th>Người Đặt</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             {{#each bookings}}
             <tr>
-                <td>{{this.name}}</td>
-                <td>{{this.email}}</td>
-                <td>{{this.phone}}</td>
-                <td>{{this.date}}</td>
+                <td>{{this.eventType}}</td>
+                <td>{{dateFormat this.date "DD/MM/YYYY"}}</td>
                 <td>{{this.time}}</td>
-                <td>{{this.venue}}</td>
-                <td>{{this.status}}</td>
+                <td>{{this.location}}</td>
+                <td>{{this.contactName}}</td>
+                <td>{{this.contactPhone}}</td>
                 <td>
-                    {{#if this.band}}
-                    {{this.band.name}}
+                    {{#if (eq this.status "pending")}}
+                    <span class="badge bg-warning text-dark">Đang chờ</span>
+                    {{else if (eq this.status "confirmed")}}
+                    <span class="badge bg-success">Đã xác nhận</span>
+                    {{else if (eq this.status "canceled")}}
+                    <span class="badge bg-danger">Đã hủy</span>
                     {{else}}
-                    Không có
-                    {{/if}}
-                </td>
-                <td>
-                    {{#if this.user}}
-                    {{this.user.name}}
-                    {{else}}
-                    Khách
+                    {{this.status}}
                     {{/if}}
                 </td>
                 <td>
@@ -50,7 +45,7 @@
             </tr>
             {{else}}
             <tr>
-                <td colspan="10">Chưa có booking nào.</td>
+                <td colspan="8">Chưa có booking nào.</td>
             </tr>
             {{/each}}
         </tbody>

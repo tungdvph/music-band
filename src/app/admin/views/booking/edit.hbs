@@ -1,44 +1,59 @@
+{{!-- src/app/admin/views/booking/edit.hbs --}}
 {{!< layouts/admin}} <h2>Chỉnh Sửa Đặt Lịch</h2>
 
     <form action="/admin/bookings/{{booking._id}}?_method=PUT" method="POST">
-        {{!-- ... các trường thông tin như create.hbs ... --}}
+
         <div>
-            <label for="name">Tên:</label>
-            <input type="text" id="name" name="name" value="{{booking.name}}">
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{booking.email}}">
-        </div>
-        <div>
-            <label for="phone">Số điện thoại:</label>
-            <input type="tel" id="phone" name="phone" value="{{booking.phone}}">
+            <label for="eventType">Loại sự kiện:</label>
+            <input type="text" id="eventType" name="eventType" value="{{booking.eventType}}" required>
         </div>
         <div>
             <label for="date">Ngày:</label>
-            <input type="date" id="date" name="date" value="{{booking.date}}">
+            <input type="date" id="date" name="date" value="{{dateFormat booking.date 'YYYY-MM-DD'}}" required>
         </div>
         <div>
             <label for="time">Thời gian:</label>
-            <input type="time" id="time" name="time" value="{{booking.time}}">
+            <input type="time" id="time" name="time" value="{{booking.time}}" required>
         </div>
         <div>
-            <label for="venue">Địa điểm:</label>
-            <input type="text" id="venue" name="venue" value="{{booking.venue}}">
+            <label for="location">Địa điểm:</label>
+            <input type="text" id="location" name="location" value="{{booking.location}}" required>
+        </div>
+        <div>
+            <label for="venue">Tên địa điểm:</label>
+            <input type="text" id="venue" name="venue" value="{{booking.venue}}" required>
+        </div>
+        <div>
+            <label for="duration">Thời lượng (giờ):</label>
+            <input type="number" id="duration" name="duration" value="{{booking.duration}}">
+        </div>
+        <div>
+            <label for="audienceSize">Số lượng khán giả dự kiến:</label>
+            <input type="number" id="audienceSize" name="audienceSize" value="{{booking.audienceSize}}">
+        </div>
+        <div>
+            <label for="requirements">Yêu cầu:</label>
+            <textarea name="requirements" id="requirements" cols="30" rows="10">{{booking.requirements}}</textarea>
+        </div>
+        <div>
+            <label for="budget">Ngân sách:</label>
+            <input type="number" id="budget" name="budget" value="{{booking.budget}}">
+        </div>
+        <div>
+            <label for="contactName">Tên người liên hệ:</label>
+            <input type="text" id="contactName" name="contactName" value="{{booking.contactName}}" required>
+        </div>
+        <div>
+            <label for="contactEmail">Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail" value="{{booking.contactEmail}}" required>
+        </div>
+        <div>
+            <label for="contactPhone">Số điện thoại:</label>
+            <input type="tel" id="contactPhone" name="contactPhone" value="{{booking.contactPhone}}" required>
         </div>
         <div>
             <label for="message">Tin nhắn:</label>
-            <textarea id="message" name="message">{{booking.message}}</textarea>
-        </div>
-        <div>
-            <label for="band">Band:</label>
-            <select name="band" id="band">
-                {{#each bands}}
-                <option value="{{this._id}}" {{#if (eq ../booking.band this._id)}}selected{{/if}}>
-                    {{this.name}}
-                </option>
-                {{/each}}
-            </select>
+            <textarea name="message" id="message" cols="30" rows="10">{{booking.message}}</textarea>
         </div>
         <div>
             <label for="status">Trạng thái:</label>

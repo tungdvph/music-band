@@ -10,30 +10,38 @@ import adminMusic from '../app/admin/routes/music.js';
 import adminbookings from '../app/admin/routes/bookings.js';
 import adminnews from '../app/admin/routes/news.js';
 import adminAuthRouter from '../app/admin/routes/auth.js';
-import adminUsersRouter from '../app/admin/routes/users.js'; // Đã thêm
-import { requireLogin, requireAdmin } from '../app/middleware/authMiddleware.js'; //
-import * as MusicController from '../app/admin/controllers/MusicController.js'; // Import MusicController
-import * as NewsController from '../app/admin/controllers/NewsController.js'; // Import NewsController
+import adminUsersRouter from '../app/admin/routes/users.js';
+import { requireLogin, requireAdmin } from '../app/middleware/authMiddleware.js';
+import * as MusicController from '../app/admin/controllers/MusicController.js';
+import * as NewsController from '../app/admin/controllers/NewsController.js';
 import * as ScheduleController from '../app/admin/controllers/ScheduleController.js';
+import * as BookingController from '../app/admin/controllers/BookingController.js';
 
 const router = express.Router();
 
-
 // ADMIN routes
 router.use('/admin/auth', adminAuthRouter);
-router.use('/admin', requireLogin, adminHomeRouter); // Áp dụng requireLogin cho tất cả /admin
+router.use('/admin', requireLogin, adminHomeRouter);
 router.use('/admin/contacts', requireLogin, adminContactRouter);
 router.use('/admin/members', requireLogin, adminMembersRouter);
 router.use('/admin/schedule', requireLogin, adminScheduleRouter);
 router.use('/admin/music', requireLogin, adminMusic);
-router.use('/admin/bookings', requireLogin, adminbookings);
+router.use('/admin/bookings', requireLogin, adminbookings); // GIỮ NGUYÊN (số nhiều)
 router.use('/admin/news', requireLogin, adminnews);
-router.use('/admin/users', requireLogin, requireAdmin, adminUsersRouter); // Cần cả requireLogin và requireAdmin
+router.use('/admin/users', requireLogin, requireAdmin, adminUsersRouter);
 
 // API endpoints
 router.get('/api/songs', MusicController.getSongsForClient);
 router.get('/api/news', NewsController.getNewsForClient);
 router.get('/api/news/:slug', NewsController.getNewsDetail);
-router.get('/api/schedules', ScheduleController.getScheduleForClient); // Lấy danh sách
-router.get('/api/schedules/:slug', ScheduleController.getScheduleDetail); // Lấy chi tiết
+router.get('/api/schedules', ScheduleController.getScheduleForClient);
+router.get('/api/schedules/:slug', ScheduleController.getScheduleDetail);
+router.post('/api/bookings', BookingController.createBooking);
+
+// Error handling middleware (PHẢI đặt cuối cùng)
+router.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Có lỗi xảy ra ở server!' });
+});
+
 export default router;

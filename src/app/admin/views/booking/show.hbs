@@ -1,24 +1,32 @@
+{{!-- src/app/admin/views/booking/show.hbs --}}
 {{!< layouts/admin}} <h2>Chi Tiết Đặt Lịch</h2>
 
-    <p>Tên người đặt: {{booking.name}}</p>
-    <p>Email: {{booking.email}}</p>
-    <p>Số điện thoại: {{booking.phone}}</p>
-    <p>Ngày: {{booking.date}}</p>
+    <p>Loại sự kiện: {{booking.eventType}}</p>
+    <p>Ngày: {{dateFormat booking.date "DD/MM/YYYY"}}</p>
     <p>Thời gian: {{booking.time}}</p>
-    <p>Địa điểm: {{booking.venue}}</p>
+    <p>Địa điểm: {{booking.location}}</p>
+    <p>Tên địa điểm: {{booking.venue}}</p>
+    <p>Thời lượng: {{booking.duration}}</p>
+    <p>Số lượng dự kiến: {{booking.audienceSize}}</p>
+    <p>Yêu cầu: {{booking.requirements}}</p>
+    <p>Ngân sách: {{booking.budget}}</p>
+    <p>Tên người liên hệ: {{booking.contactName}}</p>
+    <p>Email: {{booking.contactEmail}}</p>
+    <p>Số điện thoại: {{booking.contactPhone}}</p>
     <p>Trạng thái: {{booking.status}}</p>
 
-    {{#if booking.band}}
+    {{#if booking.message}}
+    <p>Tin nhắn: {{booking.message}}</p>
+    {{/if}}
+
+    {{!-- {{#if booking.band}}
     <p>Band: {{booking.band.name}}</p>
     {{/if}}
 
     {{#if booking.user}}
     <p>Người đặt: {{booking.user.name}}</p>
-    {{/if}}
+    {{/if}} --}}
 
-    {{#if booking.message}}
-    <p>Tin nhắn: {{booking.message}}</p>
-    {{/if}}
     <div>
         <a href="/admin/bookings/{{booking._id}}/edit" class="btn btn-warning">Sửa</a>
         <a href="/admin/bookings/{{booking._id}}/delete" class="btn btn-danger">Xóa</a>
