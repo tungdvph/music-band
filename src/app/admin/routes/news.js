@@ -1,3 +1,4 @@
+// src/app/admin/routes/news.js
 import express from 'express';
 import *as NewsController from '../controllers/NewsController.js';
 import multer from 'multer'; // Import multer

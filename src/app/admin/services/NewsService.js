@@ -1,3 +1,4 @@
+// src/app/admin/services/NewsService.js
 import News from '../../models/News.js';
 import path from 'path'; // Import thư viện path (để xử lý đường dẫn)
 
@@ -83,6 +84,15 @@ class NewsService { // Bạn có thể dùng NewsService, tùy theo cách bạn 
             return result;
         } catch (error) {
             throw new Error('Lỗi khi xóa tin tức: ' + error.message);
+        }
+    }
+
+    async getTotalNews() {
+        try {
+            const count = await News.countDocuments();
+            return count;
+        } catch (error) {
+            throw new Error('Lỗi khi đếm số lượng tin tức: ' + error.message);
         }
     }
 }

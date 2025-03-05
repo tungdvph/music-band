@@ -1,6 +1,7 @@
 import AdminNewsService from '../services/NewsService.js';
 import { validationResult } from 'express-validator';
 import User from '../../models/User.js'; // Để lấy danh sách author
+import News from '../../models/News.js';
 
 export const index = async (req, res, next) => {
     try {
@@ -134,5 +135,30 @@ export const destroy = async (req, res, next) => {
         res.redirect('/admin/news');
     } catch (error) {
         next(error);
+    }
+};
+
+// Thêm hàm này:
+export const getNewsForClient = async (req, res) => {
+    try {
+        const news = await News.find({}).select('title description image slug author').populate('author', 'username').lean(); // Chỉ lấy các trường cần thiết
+        res.json(news);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi server khi lấy danh sách tin tức.' });
+    }
+};
+
+// Thêm hàm này để lấy CHI TIẾT tin tức cho CLIENT
+export const getNewsDetail = async (req, res) => {
+    try {
+        const newsItem = await AdminNewsService.getNewsBySlug(req.params.slug);
+        if (!newsItem) {
+            return res.status(404).json({ message: 'Không tìm thấy tin tức' });
+        }
+        res.json(newsItem);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi server' });
     }
 };

@@ -1,22 +1,35 @@
-// client/src/components/NewsList.js
+// client/src/components/NewsList.js 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NewsItem from './NewsItem'; // Import NewsItem component
-import './NewsList.css'
+import NewsItem from './NewsItem';
+import './NewsList.css';
+
 function NewsList() {
     const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Gọi API để lấy danh sách tin tức (ví dụ)
-        axios.get('/api/news') // Sửa URL cho phù hợp với API của bạn
+        axios.get('/api/news')
             .then(response => {
                 setNews(response.data);
             })
             .catch(error => {
                 console.error('Error fetching news:', error);
-                // Xử lý lỗi (hiển thị thông báo, ...)
+                setError(error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
+
+    if (loading) {
+        return <div>Đang tải tin tức...</div>;
+    }
+
+    if (error) {
+        return <div>Có lỗi xảy ra: {error.message}</div>;
+    }
 
     return (
         <section className='news-list'>
@@ -24,11 +37,11 @@ function NewsList() {
             <div className='news-container'>
                 {news.map(item => (
                     <NewsItem
-                        key={item.id} //  sử dụng key khi render danh sách
+                        key={item._id}
                         title={item.title}
                         image={item.image}
                         description={item.description}
-                        link={item.link}
+                        link={`/news/${item.slug}`}
                     />
                 ))}
             </div>

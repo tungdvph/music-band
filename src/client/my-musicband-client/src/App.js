@@ -6,20 +6,22 @@ import About from './components/About.js';
 import Navbar from './components/Navbar.js'; // Import Navbar
 import MusicPlayer from './components/MusicPlayer.js';
 import NewsList from './components/NewsList.js';
-import ScheduleList from './components/ScheduleList.js'
+import ScheduleList from './components/ScheduleList.js';
+import NewsDetail from './components/NewsDetail.js'; // Import NewsDetail
 import './App.css';
 
 function App() {
   return (
     <Router>
       <div className='App'>
-        <Navbar /> {/* Thêm Navbar vào đây */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/music" element={<MusicPlayer />} />
           <Route path="/news" element={<NewsList />} />
           <Route path="/schedule" element={<ScheduleList />} />
+          <Route path="/news/:slug" element={<NewsDetail />} /> {/* Thêm route này */}
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </div>

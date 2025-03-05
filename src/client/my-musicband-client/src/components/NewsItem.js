@@ -1,6 +1,7 @@
-// client/src/components/NewsItem.js
+//client/src/components/NewsItem.js 
 import React from 'react';
-import './NewsItem.css'
+import './NewsItem.css';
+import { Link } from 'react-router-dom'; // Import Link
 
 function NewsItem({ title, image, description, link }) {
     return (
@@ -8,7 +9,7 @@ function NewsItem({ title, image, description, link }) {
             <img src={image} alt={title} className="news-image" />
             <h3 className="news-title">{title}</h3>
             <p className="news-description">{description}</p>
-            <a href={link} className="news-link">Xem thêm</a>
+            <Link to={link} className="news-link">Xem thêm</Link> {/* Dùng Link */}
         </div>
     );
 }
