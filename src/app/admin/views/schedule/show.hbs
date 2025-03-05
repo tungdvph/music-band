@@ -1,15 +1,20 @@
+{{!-- src/app/admin/views/schedule/show.hbs --}}
 {{!< layouts/admin}} <h1>Chi tiết lịch trình</h1>
     <dl class="row">
         <dt class="col-sm-3">Ngày</dt>
-        <dd class="col-sm-9">{{schedule.date}}</dd>
+        <dd class="col-sm-9">{{dateFormat schedule.date "DD/MM/YYYY"}}</dd>
 
         <dt class="col-sm-3">Thời gian</dt>
         <dd class="col-sm-9">{{schedule.time}}</dd>
 
         <dt class="col-sm-3">Địa điểm</dt>
         <dd class="col-sm-9">{{schedule.venue}}</dd>
+
         <dt class="col-sm-3">Sự kiện</dt>
         <dd class="col-sm-9">{{schedule.event}}</dd>
+
+        <dt class="col-sm-3">Tiêu đề</dt>
+        <dd class="col-sm-9">{{schedule.title}}</dd>
 
         {{#if schedule.description}}
         <dt class="col-sm-3">Mô tả</dt>
@@ -18,7 +23,7 @@
     </dl>
 
     <div>
-        <a href="/admin/schedule/{{schedule._id}}/edit" class="btn btn-warning">Sửa</a>
-        <a href="/admin/schedule/{{schedule._id}}/delete" class="btn btn-danger">Xóa</a>
+        <a href="/admin/schedule/{{schedule.slug}}/edit" class="btn btn-warning">Sửa</a> {{!-- Sửa _id thành slug --}}
+        <a href="/admin/schedule/{{schedule.slug}}/delete" class="btn btn-danger">Xóa</a> {{!-- Sửa _id thành slug --}}
         <a href="/admin/schedule">Trở lại</a>
     </div>

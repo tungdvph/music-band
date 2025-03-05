@@ -10,10 +10,11 @@ const ScheduleSchema = new Schema({
     venue: { type: String, required: true },
     date: { type: Date, required: true },
     time: { type: String },
-    title: { type: String, require: true }, // Trường này sẽ dùng để tạo slug
+    event: { type: String },
+    title: { type: String, require: true }, // Thêm trường title
     description: { type: String },
     image: { type: String },
-    slug: { type: String, slug: 'title', unique: true },  // Thêm, slug từ title, unique
+    slug: { type: String, slug: 'title', unique: true },  // Thêm, slug từ title, unique
 },
     {
         timestamps: true

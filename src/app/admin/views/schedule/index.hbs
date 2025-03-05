@@ -10,20 +10,22 @@
                 <th>Thời gian</th>
                 <th>Địa điểm</th>
                 <th>Sự kiện</th>
+                <th>Tiêu đề</th> {{!-- Thêm cột tiêu đề --}}
                 <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
             {{#each schedules}}
             <tr>
-                <td>{{this.date}}</td>
+                <td>{{dateFormat this.date "DD/MM/YYYY"}}</td>
                 <td>{{this.time}}</td>
                 <td>{{this.venue}}</td>
                 <td>{{this.event}}</td>
+                <td>{{this.title}}</td> {{!-- Hiển thị tiêu đề --}}
                 <td>
-                    <a href="/admin/schedule/{{this._id}}" class="btn btn-info btn-sm">Chi tiết</a>
-                    <a href="/admin/schedule/{{this._id}}/edit" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="/admin/schedule/{{this._id}}/delete" class="btn btn-danger btn-sm">Xóa</a>
+                    <a href="/admin/schedule/{{this.slug}}" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a href="/admin/schedule/{{this.slug}}/edit" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="/admin/schedule/{{this.slug}}/delete" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>
             {{/each}}

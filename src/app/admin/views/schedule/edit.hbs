@@ -1,3 +1,4 @@
+{{!-- src/app/admin/views/schedule/edit.hbs --}}
 {{!< layouts/admin}} <h1>Chỉnh Sửa Lịch Trình</h1>
 
     {{#if errors}}
@@ -9,10 +10,12 @@
         </ul>
     </div>
     {{/if}}
-    <form action="/admin/schedule/{{schedule._id}}?_method=PUT" method="POST">
+
+    <form action="/admin/schedule/{{schedule.slug}}?_method=PUT" method="POST"> {{!-- Sửa _id thành slug --}}
         <div class="form-group">
             <label for="date">Ngày:</label>
-            <input type="date" id="date" name="date" class="form-control" value="{{schedule.date}}" required>
+            <input type="date" id="date" name="date" class="form-control"
+                value="{{dateFormat schedule.date 'YYYY-MM-DD'}}" required>
         </div>
         <div class="form-group">
             <label for="time">Thời gian:</label>
@@ -23,8 +26,12 @@
             <input type="text" id="venue" name="venue" class="form-control" value="{{schedule.venue}}" required>
         </div>
         <div class="form-group">
-            <label for="event">Tên sự kiện</label>
-            <input type="text" name="event" id="event" class="form-control" value="{{schedule.event}}">
+            <label for="event">Tên sự kiện:</label>
+            <input type="text" id="event" name="event" class="form-control" value="{{schedule.event}}" required>
+        </div>
+        <div class="form-group">
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{schedule.title}}" required>
         </div>
         <div class="form-group">
             <label for="description">Mô tả:</label>

@@ -1,6 +1,7 @@
+// src/app/services/ScheduleService.js
 import Schedule from '../../models/Schedule.js';
 
-class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
+class ScheduleService {
   async getAllSchedules() {
     try {
       const schedules = await Schedule.find({}).lean();
@@ -10,7 +11,7 @@ class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
     }
   }
 
-  async getScheduleBySlug(slug) {
+  async getScheduleBySlug(slug) { // Đã có sẵn hàm này
     try {
       const schedule = await Schedule.findOne({ slug }).lean();
       return schedule;
@@ -23,8 +24,7 @@ class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
     try {
       const newSchedule = await Schedule.create(scheduleData);
       return newSchedule;
-    }
-    catch (error) {
+    } catch (error) {
       throw new Error('Lỗi khi tạo lịch trình: ' + error.message);
     }
   }
@@ -40,7 +40,8 @@ class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
       throw new Error('Lỗi khi cập nhật lịch trình: ' + error.message);
     }
   }
-  async deleteSchedule(slug) {
+
+  async deleteSchedule(slug) { // Đã có sẵn hàm này, và dùng slug
     try {
       const result = await Schedule.findOneAndDelete({ slug: slug }).lean();
       return result;
@@ -49,4 +50,5 @@ class ScheduleService { // KHÔNG CÓ "Admin" hay "Site" ở đây
     }
   }
 }
+
 export default new ScheduleService();
