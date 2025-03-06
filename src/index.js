@@ -1,4 +1,4 @@
-// src/index.js
+// src / index.js 
 import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
@@ -11,7 +11,8 @@ import moment from 'moment';
 import session from 'express-session';
 import flash from 'connect-flash';
 import fs from 'fs';
-import { index } from './app/admin/controllers/HomeController.js';
+import cors from 'cors';
+import MongoStore from 'connect-mongo';
 
 dotenv.config();
 
@@ -20,46 +21,79 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+console.log("Port:", process.env.PORT);
 
 async function startServer() {
     try {
         await db.connect();
-        console.log('Kết nối MongoDB thành công!'); // Log khi kết nối thành công
+        console.log('Kết nối MongoDB thành công!');
 
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
         app.use(methodOverride('_method'));
 
-        // Cấu hình express-session
-        app.use(session({
-            secret: process.env.SESSION_SECRET, // Lấy từ .env
-            resave: false,
-            saveUninitialized: false,
-            cookie: {
-                maxAge: 1000 * 60 * 60 * 24 // 1 day (tùy chỉnh)
-            }
+        const allowedOrigins = ['http://localhost:3001', 'http://localhost:3000'];
+        app.use(cors({
+            origin: function (origin, callback) {
+                if (!origin) return callback(null, true);
+                if (allowedOrigins.indexOf(origin) === -1) {
+                    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+                    return callback(new Error(msg), false);
+                }
+                return callback(null, true);
+            },
+            credentials: true,
         }));
 
-        // Cấu hình connect-flash
+        // Middleware xác định domain (frontend hoặc backend)
+        const getDomain = (req) => {
+            const host = req.hostname; // Lấy hostname (chỉ tên miền, không có port)
+            if (host === 'localhost') {
+                return req.headers.referer?.startsWith('http://localhost:3001') ? 'client' : 'admin';
+            }
+            return 'admin'; // Hoặc xử lý các tên miền khác nếu cần
+        };
+
+
+        // Cấu hình session
+        app.use((req, res, next) => {
+            const domain = getDomain(req);
+            const sessionConfig = {
+                secret: process.env.SESSION_SECRET,
+                resave: false,
+                saveUninitialized: false,
+                cookie: {
+                    maxAge: 1000 * 60 * 60 * 24,
+                    httpOnly: true, // Quan trọng: ngăn JavaScript truy cập cookie
+                    // secure: true, // Chỉ dùng khi có HTTPS
+                },
+                store: MongoStore.create({
+                    mongoUrl: process.env.MONGODB_URI,
+                    collectionName: 'sessions',
+                }),
+                name: domain === 'client' ? 'clientSession' : 'adminSession', // Đặt tên cookie dựa trên domain
+            };
+            session(sessionConfig)(req, res, next); // Gọi session() như một middleware
+        });
+
+
         app.use(flash());
 
-        // Middleware để truyền biến flash messages và user vào tất cả các views
         app.use((req, res, next) => {
             res.locals.success_msg = req.flash('success_msg');
             res.locals.error_msg = req.flash('error_msg');
             res.locals.error = req.flash('error');
-            res.locals.user = req.session.user || null; // Lấy từ req.session.user
+            res.locals.user = req.session.user || null; // Lấy user từ session, không cần phân biệt client/admin ở đây
             next();
         });
 
-        // Cấu hình Handlebars
         const hbs = create({
             extname: '.hbs',
             helpers: {
                 sum: (a, b) => a + b,
                 eq: (a, b) => a === b,
                 isObject: value => typeof value === 'object' && value !== null,
-                isArray: value => Array.isArray(value), // Sửa DeprecationWarning
+                isArray: value => Array.isArray(value),
                 dateFormat: (date, format) => {
                     if (!date) return '';
                     return moment(date).format(format);
@@ -67,7 +101,6 @@ async function startServer() {
             },
         });
 
-        // Đăng ký partials
         const partialsDir = path.join(__dirname, 'app', 'admin', 'views', 'partials');
         if (fs.existsSync(partialsDir)) {
             const filenames = fs.readdirSync(partialsDir);
@@ -87,30 +120,19 @@ async function startServer() {
         app.set('view engine', '.hbs');
         app.set('views', path.join(__dirname, 'app', 'admin', 'views'));
 
-
-        // --- Cấu hình cho cả admin và React ---
-
-        // 1. Các routes cho phần ADMIN (đặt lên đầu)
         app.use('/', routes);
-
-        // 2. Serve static files cho phần ADMIN (từ thư mục 'public')
         app.use(express.static(path.join(__dirname, 'public')));
 
-        // 3. Serve static files cho React (từ thư mục 'public')
-        const rootDir = path.resolve(); // Lấy đường dẫn gốc của ứng dụng
-        const reactBuildPath = path.join(rootDir, 'client', 'my-musicband-client', 'public'); // Đường dẫn tuyệt đối
+        const rootDir = path.resolve();
+        const reactBuildPath = path.join(rootDir, 'client', 'my-musicband-client', 'build');
         app.use(express.static(reactBuildPath));
 
-        // Cấu hình để serve thư mục uploads như static files (cũng nên dùng đường dẫn tuyệt đối)
-        const uploadsPath = path.join(rootDir, 'src', 'public', 'uploads'); // Giả sử uploads nằm trong src/public
+        const uploadsPath = path.join(rootDir, 'src', 'public', 'uploads');
         app.use('/uploads', express.static(uploadsPath));
 
-        // 4. "Catch-all" route cho React (trả về index.html, đặt cuối cùng)
-        app.get('*', (req, res) => {
+        app.get(/^(?!\/admin|\/api).*/, (req, res) => {
             res.sendFile(path.join(reactBuildPath, 'index.html'));
         });
-
-        // --- Kết thúc phần cấu hình ---
 
         app.listen(port, () => {
             console.log(`App listening on port ${port}`);
@@ -122,11 +144,7 @@ async function startServer() {
 
 startServer();
 
-// Middleware xử lý lỗi chung (đặt CUỐI CÙNG)
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).render('error', {
-        message: err.message || 'Đã xảy ra lỗi không xác định!',
-        layout: 'admin',
-    });
+    res.status(500).render('error', { message: 'Something broke!' });
 });

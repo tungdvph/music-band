@@ -1,17 +1,19 @@
 // client/src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setMessage(''); // Reset message
+        setMessage('');
 
         try {
             const response = await fetch('/api/login', {
@@ -26,10 +28,9 @@ function Login() {
 
             if (response.ok) {
                 // Đăng nhập thành công:
+                setUser(data.user);
                 localStorage.setItem('user', JSON.stringify(data.user));
-                // Chuyển hướng đến trang chủ
-                navigate('/');
-                window.location.reload(); // Reload để Navbar cập nhật (cách đơn giản)
+                navigate('/'); // Chuyển hướng về trang chủ
 
             } else {
                 setMessage(data.message || 'Đăng nhập thất bại.');

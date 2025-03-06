@@ -1,4 +1,5 @@
 // src/routes/index.js
+// src/routes/index.js
 import express from 'express';
 
 // ADMIN routes
@@ -29,24 +30,25 @@ router.use('/admin/contacts', requireAdmin, adminContactRouter); // Cần quyề
 router.use('/admin/members', requireAdmin, adminMembersRouter);  // Cần quyền admin
 router.use('/admin/schedule', requireAdmin, adminScheduleRouter); // Cần quyền admin
 router.use('/admin/music', requireAdmin, adminMusic);          // Cần quyền admin
-router.use('/admin/bookings', requireAdmin, adminbookings);     // Cần quyền admin
-router.use('/admin/news', requireAdmin, adminnews);            // Cần quyền admin
-router.use('/admin/users', requireAdmin, adminUsersRouter);    // Cần quyền admin (đã đúng)
+router.use('/admin/bookings', requireAdmin, adminbookings);      // Cần quyền admin
+router.use('/admin/news', requireAdmin, adminnews);             // Cần quyền admin
+router.use('/admin/users', requireAdmin, adminUsersRouter);     // Cần quyền admin (đã đúng)
 
-// API endpoints
-router.get('/api/songs', MusicController.getSongsForClient);      // Public
-router.get('/api/news', NewsController.getNewsForClient);         // Public
-router.get('/api/news/:slug', NewsController.getNewsDetail);      // Public
-router.get('/api/schedules', ScheduleController.getScheduleForClient); // Public
-router.get('/api/schedules/:slug', ScheduleController.getScheduleDetail); // Public
+// API endpoints (CLIENT)
+router.get('/api/songs', MusicController.getSongsForClient);              // Public
+router.get('/api/news', NewsController.getNewsForClient);                // Public
+router.get('/api/news/:slug', NewsController.getNewsDetail);              // Public
+router.get('/api/schedules', ScheduleController.getScheduleForClient);    // Public
+router.get('/api/schedules/:slug', ScheduleController.getScheduleDetail);  // Public
 router.post('/api/bookings', requireUser, BookingController.createBooking); // Chỉ user đã đăng nhập mới được đặt lịch
-router.get('/api/members', MemberController.getMembersForClient); // Public
-router.get('/api/members/:slug', MemberController.getMemberDetail); // Public
-router.post('/api/contacts', ContactController.createContact);   // Public (hoặc requireUser nếu bạn muốn)
+router.get('/api/members', MemberController.getMembersForClient);          // Public
+router.get('/api/members/:slug', MemberController.getMemberDetail);      // Public
+router.post('/api/contacts', ContactController.createContact);      // Public (hoặc requireUser nếu bạn muốn)
 
-router.post('/api/register', AuthClientController.register);       // Đăng ký (public)
-router.post('/api/login', AuthClientController.login);           // Đăng nhập (public)
-router.get('/api/logout', AuthClientController.logout);            // Đăng xuất (cần requireLogin, vì chỉ người đã đăng nhập mới đăng xuất được)
+// API endpoints (CLIENT Authentication)
+router.post('/api/register', AuthClientController.register);            // Đăng ký (public)
+router.post('/api/login', AuthClientController.login);                  // Đăng nhập (public)
+router.get('/api/logout', requireLogin, AuthClientController.logout);   // Đăng xuất (cần requireLogin, vì chỉ người đã đăng nhập mới đăng xuất được)
 
 
 // Error handling middleware (PHẢI đặt cuối cùng)

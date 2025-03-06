@@ -78,22 +78,21 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: authResult.message });
         }
 
-        // *** QUAN TRỌNG: Lấy đầy đủ thông tin user từ database ***
-        const user = await User.findOne({ username }); // Tìm user bằng username
-        if (!user) {
-            // Trường hợp này không nên xảy ra, nhưng vẫn nên kiểm tra
-            return res.status(401).json({ message: "User not found" });
-        }
+        // Lấy thông tin user từ authResult (đã loại bỏ password)
+        const user = authResult.user;
 
-        // Tạo một bản sao của user object, loại bỏ trường password
-        const userToStore = { ...user.toObject() }; // Dùng .toObject() để clone object từ Mongoose
-        delete userToStore.password;
 
-        // Lưu thông tin user vào session
-        req.session.user = userToStore;
+        // Lưu thông tin user vào session *CHỈ* các thông tin cần thiết
+        req.session.user = {
+            _id: user._id,
+            username: user.username,
+            role: user.role,
+            email: user.email,
+            fullName: user.fullName
+        };
 
-        // Trả về thông tin user (không có password) cho client
-        res.json({ message: 'Đăng nhập thành công!', user: userToStore });
+
+        res.json({ message: 'Đăng nhập thành công!', user: req.session.user }); // Trả về session.user
 
     } catch (error) {
         console.error(error);
