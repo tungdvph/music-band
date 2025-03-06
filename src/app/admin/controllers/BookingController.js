@@ -130,7 +130,7 @@ export const destroy = async (req, res, next) => {// Thêm next
     }
 };
 
-// Xử lý lưu booking mới (POST /api/bookings) - Dùng cho CLIENT  -> ĐỔI TÊN HÀM
+// Xử lý lưu booking mới (POST /api/bookings) - Dùng cho CLIENT  
 export const createBooking = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

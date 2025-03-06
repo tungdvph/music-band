@@ -1,52 +1,53 @@
-// client/src/components/Login.js
+//client/src/components/Login.js
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import './Login.css';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import './Login.css'
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [error, setError] = useState('');
     const { setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation(); // Lấy thông tin location
+
+    const from = location.state?.from || '/'; // Lấy trang trước đó, hoặc về trang chủ
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setMessage('');
+        setError('');
 
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
+            const response = await axios.post('/api/login', { username, password }, {
+                withCredentials: true,
             });
 
-            const data = await response.json();
+            if (response.status === 200) {
+                const userData = response.data.user;
 
-            if (response.ok) {
-                // Đăng nhập thành công:
-                setUser(data.user);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                navigate('/'); // Chuyển hướng về trang chủ
-
+                localStorage.setItem('user', JSON.stringify(userData));
+                setUser(userData);
+                navigate(from, { replace: true }); // Quay lại trang trước đó, hoặc trang chủ. replace: true để xóa trang /login khỏi history.
             } else {
-                setMessage(data.message || 'Đăng nhập thất bại.');
+                setError('Đăng nhập không thành công.');
             }
-        } catch (error) {
-            console.error('Error during login:', error);
-            setMessage('Đã xảy ra lỗi khi kết nối đến server.');
+        } catch (err) {
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError('Đăng nhập không thành công. Vui lòng kiểm tra tên đăng nhập và mật khẩu.');
+            }
         }
     };
 
     return (
-        <div className="login-container">
+        <div className='login-container'>
             <h2>Đăng nhập</h2>
-            {message && <div className={message.includes('thành công') ? "success-message" : "error-message"}>{message}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
+            {error && <div className="error-message">{error}</div>}
+            <form onSubmit={handleSubmit} className='login-form'>
+                <div className='form-group'>
                     <label htmlFor="username">Tên đăng nhập:</label>
                     <input
                         type="text"
@@ -56,7 +57,7 @@ function Login() {
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div className='form-group'>
                     <label htmlFor="password">Mật khẩu:</label>
                     <input
                         type="password"
@@ -68,9 +69,6 @@ function Login() {
                 </div>
                 <button type="submit">Đăng nhập</button>
             </form>
-            <div className='link-register'>
-                <p>Bạn chưa có tài khoản? <Link to="/register">Đăng Ký</Link></p>
-            </div>
         </div>
     );
 }

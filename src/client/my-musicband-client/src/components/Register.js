@@ -1,7 +1,8 @@
 // client/src/components/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Register.css'; // Import file CSS
+import './Register.css';
+import axios from 'axios'; // Import axios
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -14,35 +15,31 @@ function Register() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setMessage(''); // Reset message
+        setMessage('');
 
         try {
-            const response = await fetch('/api/register', { // Gửi POST request đến /api/register
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password, email, fullName }),
+            const response = await axios.post('/api/register', { username, password, email, fullName }, {
+                withCredentials: true,
             });
 
-            const data = await response.json(); // Chuyển response sang JSON
+            const data = response.data;
 
-            if (response.ok) {
-                // Đăng ký thành công
-                setMessage(data.message); // Hiển thị thông báo từ server
-                // Chuyển hướng đến trang đăng nhập sau 1 giây
+            if (response.status === 200 || response.status === 201) {
+                setMessage(data.message);
                 setTimeout(() => {
                     navigate('/login');
-                }, 1000)
-
+                }, 1000);
             } else {
-                // Lỗi
-                setMessage(data.message || 'Đã xảy ra lỗi.'); // Hiển thị thông báo lỗi
+                setMessage(data.message || 'Đã xảy ra lỗi.');
             }
-
         } catch (error) {
             console.error('Error during registration:', error);
-            setMessage('Đã xảy ra lỗi khi kết nối đến server.');
+            if (error.response) {
+                setMessage(error.response.data.message || 'Đã xảy ra lỗi.');
+            } else {
+                setMessage('Đã xảy ra lỗi khi kết nối đến server.');
+            }
+
         }
     };
 

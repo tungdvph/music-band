@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import axios from 'axios'; // Import axios
 
 function Logout() {
     const navigate = useNavigate();
@@ -10,28 +11,24 @@ function Logout() {
     useEffect(() => {
         const handleLogout = async () => {
             try {
-                const response = await fetch('/api/logout'); // Gọi API logout
-                if (response.ok) {
-                    setUser(null); // Xóa user khỏi context
-                    localStorage.removeItem('user'); // Xóa user khỏi localStorage
-                    navigate('/login'); // Chuyển hướng về trang đăng nhập
-                } else {
-                    console.error('Logout failed:', await response.text());
-                    // Xử lý lỗi logout (ví dụ: hiển thị thông báo)
-                }
+                await axios.get('/api/logout', { withCredentials: true }); // Gửi cookies
+                setUser(null);
+                localStorage.removeItem('user');
+                navigate('/login');
             } catch (error) {
-                console.error('Error during logout:', error);
-                // Xử lý lỗi kết nối
+                console.error('Logout failed:', error);
+                // Xử lý lỗi (có thể hiển thị thông báo)
             }
         };
 
-        handleLogout(); // Gọi hàm logout ngay khi component được render
-    }, [setUser, navigate]); // Dependency array: setUser và navigate
+        handleLogout();
+    }, [setUser, navigate]);
 
     return (
         <div>
-            <p>Đang đăng xuất...</p> {/* Hiển thị thông báo trong khi chờ logout */}
+            <p>Đang đăng xuất...</p>
         </div>
     );
 }
+
 export default Logout;

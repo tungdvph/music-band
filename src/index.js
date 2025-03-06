@@ -1,4 +1,3 @@
-// src / index.js 
 import express from 'express';
 import { create } from 'express-handlebars';
 import path from 'path';
@@ -42,7 +41,7 @@ async function startServer() {
                 }
                 return callback(null, true);
             },
-            credentials: true,
+            credentials: true, // Allow cookies to be sent
         }));
 
         // Middleware xác định domain (frontend hoặc backend)
@@ -83,7 +82,7 @@ async function startServer() {
             res.locals.success_msg = req.flash('success_msg');
             res.locals.error_msg = req.flash('error_msg');
             res.locals.error = req.flash('error');
-            res.locals.user = req.session.user || null; // Lấy user từ session, không cần phân biệt client/admin ở đây
+            res.locals.user = req.session.user || null; // Lấy user từ session
             next();
         });
 
@@ -120,31 +119,26 @@ async function startServer() {
         app.set('view engine', '.hbs');
         app.set('views', path.join(__dirname, 'app', 'admin', 'views'));
 
-        app.use('/', routes);
-        app.use(express.static(path.join(__dirname, 'public')));
-
         const rootDir = path.resolve();
-        const reactBuildPath = path.join(rootDir, 'client', 'my-musicband-client', 'build');
-        app.use(express.static(reactBuildPath));
+        const reactBuildPath = path.join(rootDir, 'client', 'my-musicband-client', 'build'); // Chú ý đường dẫn
+        app.use(express.static(reactBuildPath)); // Đặt static file middleware LÊN TRÊN
 
         const uploadsPath = path.join(rootDir, 'src', 'public', 'uploads');
         app.use('/uploads', express.static(uploadsPath));
+
+        app.use('/', routes); // routes ở DƯỚI
 
         app.get(/^(?!\/admin|\/api).*/, (req, res) => {
             res.sendFile(path.join(reactBuildPath, 'index.html'));
         });
 
+
         app.listen(port, () => {
-            console.log(`App listening on port ${port}`);
+            console.log(`Server is running on http://localhost:${port}`);
         });
     } catch (error) {
-        console.error("Không thể khởi động server", error);
+        console.error('Lỗi kết nối MongoDB:', error);
     }
 }
 
 startServer();
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).render('error', { message: 'Something broke!' });
-});

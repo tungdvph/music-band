@@ -1,27 +1,19 @@
-// client/src/components/BookingForm.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // Xóa useEffect
 import axios from 'axios';
-import './BookingForm.css'; // Import file CSS (tạo file này ở bước sau)
+import './BookingForm.css';
+import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom'; // Giữ lại Link
 
 function BookingForm() {
     const [formData, setFormData] = useState({
-        eventType: '',
-        date: '',
-        time: '',
-        location: '',
-        venue: '',
-        duration: '',
-        audienceSize: '',
-        requirements: '',
-        budget: '',
-        contactName: '',
-        contactEmail: '',
-        contactPhone: '',
-        message: ''
+        eventType: '', date: '', time: '', location: '', venue: '',
+        duration: '', audienceSize: '', requirements: '', budget: '',
+        contactName: '', contactEmail: '', contactPhone: '', message: ''
     });
-
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const { user, loading } = useContext(AuthContext); // Lấy cả loading
+    // const navigate = useNavigate(); // Xóa dòng này
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,24 +25,45 @@ function BookingForm() {
         setErrorMessage('');
 
         try {
-            const response = await axios.post('/api/bookings', formData);
-            console.log(response.data); // Log kết quả (nếu cần)
+            const response = await axios.post('/api/bookings', formData, {
+                withCredentials: true,
+            });
+            console.log(response.data);
             setSuccessMessage('Yêu cầu đặt lịch của bạn đã được gửi thành công!');
-            setFormData({ // Reset form sau khi gửi thành công
+            setFormData({
                 eventType: '', date: '', time: '', location: '', venue: '',
                 duration: '', audienceSize: '', requirements: '', budget: '',
                 contactName: '', contactEmail: '', contactPhone: '', message: ''
             });
         } catch (error) {
             console.error("Error submitting booking:", error);
-            if (error.response && error.response.data && error.response.data.errors) {
-                // Nếu server trả về lỗi validation
+            if (error.response && error.response.status === 401) {
+                setErrorMessage('Bạn cần đăng nhập để thực hiện thao tác này.');
+                // navigate('/login'); // Không chuyển hướng ở đây
+            } else if (error.response && error.response.data && error.response.data.errors) {
                 setErrorMessage(error.response.data.errors.map(err => err.msg).join(', '));
             } else {
                 setErrorMessage('Có lỗi xảy ra. Vui lòng thử lại.');
             }
         }
     };
+
+
+    if (loading) {
+        return <div>Đang tải...</div>; // Hiển thị loading
+    }
+
+    if (!user) {
+        return (
+            <div>
+                <p>Vui lòng <Link to="/login">đăng nhập</Link> để sử dụng chức năng này.</p>
+                {/* Hoặc dùng button:
+        <button onClick={() => navigate('/login', { state: { from: '/booking' } })}>Đăng nhập</button>
+        */}
+            </div>
+        );
+    }
+
 
     return (
         <div className="booking-form-container">
