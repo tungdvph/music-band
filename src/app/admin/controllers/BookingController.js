@@ -1,36 +1,36 @@
 // src/app/admin/controllers/BookingController.js
-import BookingService from '../services/BookingService.js'; // Sửa đường dẫn import
+import BookingService from '../services/BookingService.js';
 import { validationResult } from 'express-validator';
-import Band from '../../models/Band.js'; // Sửa đường dẫn import
+import Band from '../../models/Band.js';
 
 // Hiển thị danh sách booking (cho admin)
-export const index = async (req, res, next) => { // Thêm next
+export const index = async (req, res, next) => {
     try {
-        const bookings = await BookingService.getAllBookings();
-        // console.log("Bookings:", bookings); // Xóa dòng này khi code đã chạy ổn
-        res.render('booking/index', { title: 'Quản lý Đặt lịch', bookings: bookings, layout: 'admin' }); // Sửa đường dẫn
+        const bookingService = new BookingService(); // Tạo instance
+        const bookings = await bookingService.getAllBookings();
+        res.render('booking/index', { title: 'Quản lý Đặt lịch', bookings: bookings, layout: 'admin' });
     } catch (error) {
-        next(error); // Chuyển lỗi xuống middleware xử lý lỗi chung
+        next(error);
     }
 };
 
-// Hiển thị form tạo mới booking (GET /admin/bookings/create)
-export const create = async (req, res, next) => { // Thêm next
+// Hiển thị form tạo mới booking
+export const create = async (req, res, next) => {
     try {
-        const bands = await Band.find({}).lean(); // Lấy danh sách band
-        res.render('booking/create', { title: 'Tạo Booking Mới', layout: 'admin', bands: bands });// Sửa đường dẫn
+        const bands = await Band.find({}).lean();
+        res.render('booking/create', { title: 'Tạo Booking Mới', layout: 'admin', bands: bands });
     } catch (error) {
-        next(error); // Chuyển lỗi xuống middleware xử lý lỗi chung
+        next(error);
     }
 };
 
-// Xử lý lưu booking mới (POST /admin/bookings)
-export const store = async (req, res, next) => { // Thêm next
+// Xử lý lưu booking mới
+export const store = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         try {
             const bands = await Band.find({}).lean();
-            return res.status(400).render('booking/create', { // Sửa đường dẫn
+            return res.status(400).render('booking/create', {
                 title: 'Tạo Booking Mới',
                 errors: errors.array(),
                 booking: req.body,
@@ -44,47 +44,51 @@ export const store = async (req, res, next) => { // Thêm next
     }
 
     try {
-        const newBooking = await BookingService.createBooking(req.body);
+        const bookingService = new BookingService(); // Tạo instance
+        const newBooking = await bookingService.createBooking(req.body);
         res.redirect('/admin/bookings');
     } catch (error) {
         next(error)
     }
 };
 
-//show - Hiển thị chi tiết booking
-export const show = async (req, res, next) => { //them next
+// Hiển thị chi tiết booking
+export const show = async (req, res, next) => {
     try {
-        const booking = await BookingService.getBookingById(req.params.id);
+        const bookingService = new BookingService(); // Tạo instance
+        const booking = await bookingService.getBookingById(req.params.id);
         if (!booking) {
-            return res.status(404).render('error', { message: 'Không tìm thấy booking', layout: 'admin' }) //có thể chuyển hướng sang 1 trang thông báo lỗi.
+            return res.status(404).render('error', { message: 'Không tìm thấy booking', layout: 'admin' })
         }
-        res.render('booking/show', { title: 'Chi tiết đặt lịch', booking: booking, layout: 'admin' }) // Sửa đường dẫn
+        res.render('booking/show', { title: 'Chi tiết đặt lịch', booking: booking, layout: 'admin' })
     } catch (error) {
         next(error)
     }
 }
 
-// Hiển thị form edit (cho admin)
-export const edit = async (req, res, next) => { // Thêm next
+// Hiển thị form edit
+export const edit = async (req, res, next) => {
     try {
-        const booking = await BookingService.getBookingById(req.params.id);
+        const bookingService = new BookingService(); // Tạo instance
+        const booking = await bookingService.getBookingById(req.params.id);
         const bands = await Band.find({}).lean();
         if (!booking) {
             return res.status(404).render('error', { message: 'Không tìm thấy đặt lịch', layout: 'admin' });
         }
-        res.render('booking/edit', { title: 'Chỉnh sửa đặt lịch', booking: booking, bands: bands, layout: 'admin' });// Sửa đường dẫn
+        res.render('booking/edit', { title: 'Chỉnh sửa đặt lịch', booking: booking, bands: bands, layout: 'admin' });
     } catch (error) {
         next(error);
     }
 };
 
-// Cập nhật booking (cho admin)
-export const update = async (req, res, next) => { // Thêm next
+// Cập nhật booking
+export const update = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const booking = await BookingService.getBookingById(req.params.id);
+        const bookingService = new BookingService(); // Tạo instance
+        const booking = await bookingService.getBookingById(req.params.id);
         const bands = await Band.find({}).lean();
-        return res.status(400).render('booking/edit', { // Sửa đường dẫn
+        return res.status(400).render('booking/edit', {
             title: 'Chỉnh sửa đặt lịch',
             errors: errors.array(),
             booking: booking,
@@ -94,43 +98,46 @@ export const update = async (req, res, next) => { // Thêm next
     }
 
     try {
-        const updatedBooking = await BookingService.updateBooking(req.params.id, req.body);
+        const bookingService = new BookingService(); // Tạo instance
+        const updatedBooking = await bookingService.updateBooking(req.params.id, req.body);
         if (!updatedBooking) {
             return res.status(404).render('error', { message: 'Không tìm thấy đặt lịch', layout: 'admin' });
         }
-        res.redirect('/admin/bookings'); // Chuyển hướng về trang danh sách bookings (trong admin)
+        res.redirect('/admin/bookings');
     } catch (error) {
         next(error);
     }
 };
 
-// Hiển thị trang xác nhận xóa (cho admin)
-export const confirmDelete = async (req, res, next) => {// Thêm next
+// Hiển thị trang xác nhận xóa
+export const confirmDelete = async (req, res, next) => {
     try {
-        const booking = await BookingService.getBookingById(req.params.id);
+        const bookingService = new BookingService(); // Tạo instance
+        const booking = await bookingService.getBookingById(req.params.id);
         if (!booking) {
             return res.status(404).render('error', { message: 'Không tìm thấy đặt lịch', layout: 'admin' });
         }
-        res.render('booking/confirm-delete', { title: 'Xác nhận xóa', booking: booking, layout: 'admin' });// Sửa đường dẫn
+        res.render('booking/confirm-delete', { title: 'Xác nhận xóa', booking: booking, layout: 'admin' });
     } catch (error) {
         next(error);
     }
 };
 
-// Xóa booking (cho admin)
-export const destroy = async (req, res, next) => {// Thêm next
+// Xóa booking
+export const destroy = async (req, res, next) => {
     try {
-        const result = await BookingService.deleteBooking(req.params.id);
+        const bookingService = new BookingService(); // Tạo instance
+        const result = await bookingService.deleteBooking(req.params.id);
         if (!result) {
             return res.status(404).render('error', { message: 'Không tìm thấy đặt lịch', layout: 'admin' });
         }
-        res.redirect('/admin/bookings'); // Chuyển hướng về trang danh sách bookings
+        res.redirect('/admin/bookings');
     } catch (error) {
         next(error)
     }
 };
 
-// Xử lý lưu booking mới (POST /api/bookings) - Dùng cho CLIENT  
+// Xử lý lưu booking mới (cho CLIENT)
 export const createBooking = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -138,7 +145,8 @@ export const createBooking = async (req, res, next) => {
     }
 
     try {
-        const newBooking = await BookingService.createBooking(req.body);
+        const bookingService = new BookingService(); // Tạo instance
+        const newBooking = await bookingService.createBooking(req.body);
         res.status(201).json({ message: 'Đặt lịch thành công!', booking: newBooking });
     } catch (error) {
         next(error);

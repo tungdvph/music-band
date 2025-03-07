@@ -1,9 +1,11 @@
+// src/app/admin/controllers/UsersController.js
 import UserService from '../services/UserService.js';
 import { body, validationResult } from 'express-validator';
 
 export const index = async (req, res, next) => {
     try {
-        const users = await UserService.getAllUsers();
+        const userService = new UserService(); // Tạo instance
+        const users = await userService.getAllUsers();
         res.render('users/index', { title: 'Quản lý người dùng', users, layout: 'admin' }); // Sửa đường dẫn
     } catch (error) {
         next(error);
@@ -15,7 +17,7 @@ export const create = (req, res) => {
 };
 
 export const store = [
-    // Validation rules for creating a user
+    // Validation rules
     body('username')
         .trim()
         .isLength({ min: 3 }).withMessage('Tên đăng nhập phải có ít nhất 3 ký tự.')
@@ -33,7 +35,6 @@ export const store = [
     body('role')
         .isIn(['admin', 'user', 'member']).withMessage('Vai trò không hợp lệ.'),
 
-    // Request handling (after validation)
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -46,7 +47,8 @@ export const store = [
         }
 
         try {
-            const newUser = await UserService.createUser(req.body);
+            const userService = new UserService(); // Tạo instance
+            const newUser = await userService.createUser(req.body);
             res.redirect('/admin/users');
         } catch (error) {
             if (error.message.startsWith('Tên đăng nhập đã tồn tại') || error.message.startsWith('Email đã tồn tại')) {
@@ -64,7 +66,8 @@ export const store = [
 
 export const show = async (req, res, next) => {
     try {
-        const user = await UserService.getUserById(req.params.id);
+        const userService = new UserService(); // Tạo instance
+        const user = await userService.getUserById(req.params.id);
         res.render('users/show', { title: 'Chi tiết người dùng', user, layout: 'admin' }); // Sửa đường dẫn
     } catch (error) {
         if (error.message === 'Không tìm thấy người dùng.') {
@@ -76,7 +79,8 @@ export const show = async (req, res, next) => {
 
 export const edit = async (req, res, next) => {
     try {
-        const user = await UserService.getUserById(req.params.id);
+        const userService = new UserService(); // Tạo instance
+        const user = await userService.getUserById(req.params.id);
         res.render('users/edit', { title: 'Sửa người dùng', user, layout: 'admin' }); // Sửa đường dẫn
     } catch (error) {
         if (error.message === 'Không tìm thấy người dùng.') {
@@ -87,7 +91,7 @@ export const edit = async (req, res, next) => {
 };
 
 export const update = [
-    // Validation rules for updating a user
+    // Validation rules
     body('email')
         .isEmail().withMessage('Email không hợp lệ.')
         .normalizeEmail(),
@@ -101,11 +105,11 @@ export const update = [
         .optional({ checkFalsy: true })
         .isLength({ min: 6 }).withMessage('Mật khẩu phải có ít nhất 6 ký tự.'),
 
-    // Request handling (after validation)
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            const user = await UserService.getUserById(req.params.id);
+            const userService = new UserService(); // Tạo instance
+            const user = await userService.getUserById(req.params.id);
             return res.render('users/edit', { // Sửa đường dẫn
                 title: 'Sửa người dùng',
                 layout: 'admin',
@@ -115,11 +119,13 @@ export const update = [
         }
 
         try {
-            const updatedUser = await UserService.updateUser(req.params.id, req.body);
+            const userService = new UserService(); // Tạo instance
+            const updatedUser = await userService.updateUser(req.params.id, req.body);
             res.redirect('/admin/users');
         } catch (error) {
             if (error.message.startsWith('Email đã tồn tại') || error.message === 'Không tìm thấy người dùng.') {
-                const user = await UserService.getUserById(req.params.id);
+                const userService = new UserService(); // Tạo instance
+                const user = await userService.getUserById(req.params.id);
                 return res.render('users/edit', { // Sửa đường dẫn
                     title: 'Sửa người dùng',
                     layout: 'admin',
@@ -134,7 +140,8 @@ export const update = [
 
 export const confirmDelete = async (req, res, next) => {
     try {
-        const user = await UserService.getUserById(req.params.id);
+        const userService = new UserService(); // Tạo instance
+        const user = await userService.getUserById(req.params.id);
         res.render('users/confirm-delete', { title: 'Xác nhận xóa', user, layout: 'admin' }); // Sửa đường dẫn
     } catch (error) {
         if (error.message === 'Không tìm thấy người dùng.') {
@@ -146,7 +153,8 @@ export const confirmDelete = async (req, res, next) => {
 
 export const destroy = async (req, res, next) => {
     try {
-        await UserService.deleteUser(req.params.id);
+        const userService = new UserService(); // Tạo instance
+        await userService.deleteUser(req.params.id);
         res.redirect('/admin/users');
     } catch (error) {
         if (error.message === 'Không thể xóa người dùng này vì có dữ liệu liên quan.' || error.message.startsWith('Lỗi khi xóa người dùng')) {

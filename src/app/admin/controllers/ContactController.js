@@ -4,8 +4,8 @@ import { validationResult } from 'express-validator';
 
 export const index = async (req, res, next) => {
     try {
-        const contacts = await ContactService.getAllContacts();
-        // SỬA ĐƯỜNG DẪN VIEW Ở ĐÂY:
+        const contactService = new ContactService(); // Tạo instance
+        const contacts = await contactService.getAllContacts();
         res.render('contacts/index', { title: "Quản lý liên hệ", contacts: contacts, layout: 'admin' })
     }
     catch (error) {
@@ -15,11 +15,11 @@ export const index = async (req, res, next) => {
 
 export const show = async (req, res, next) => {
     try {
-        const contact = await ContactService.getContactById(req.params.id);
+        const contactService = new ContactService(); // Tạo instance
+        const contact = await contactService.getContactById(req.params.id);
         if (!contact) {
             return res.status(404).render('error', { message: "Không tìm thấy liên hệ" })
         }
-        // SỬA ĐƯỜNG DẪN VIEW Ở ĐÂY:
         res.render('contacts/show', { title: "Chi tiết liên hệ", contact: contact, layout: 'admin' })
     }
     catch (error) {
@@ -30,16 +30,17 @@ export const show = async (req, res, next) => {
 export const updateStatus = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { newStatus } = req.body; // Lấy trạng thái mới từ body (ví dụ: từ một form)
+        const { newStatus } = req.body; // Lấy trạng thái mới từ body
 
-        const updatedContact = await ContactService.updateContactStatus(id, newStatus);
+        const contactService = new ContactService(); // Tạo instance
+        const updatedContact = await contactService.updateContactStatus(id, newStatus);
 
         if (!updatedContact) {
             return res.status(404).render('error', { message: 'Không tìm thấy liên hệ' });
         }
 
         // Trả về JSON hoặc chuyển hướng (tùy bạn)
-        res.redirect(`/admin/contacts/${id}`)
+        res.redirect(`/admin/contacts`)
     } catch (error) {
         next(error);
     }
@@ -47,12 +48,14 @@ export const updateStatus = async (req, res, next) => {
 export const markAsRead = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const updatedContact = await ContactService.markAsRead(id);
+
+        const contactService = new ContactService(); // Tạo instance
+        const updatedContact = await contactService.markAsRead(id);
 
         if (!updatedContact) {
             return res.status(404).render('error', { message: 'Không tìm thấy liên hệ' });
         }
-        res.redirect(`/admin/contacts/${id}`)
+        res.redirect(`/admin/contacts`)
     } catch (error) {
         next(error)
     }
@@ -60,7 +63,9 @@ export const markAsRead = async (req, res, next) => {
 export const destroy = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const result = await ContactService.deleteContact(id);
+
+        const contactService = new ContactService(); // Tạo instance
+        const result = await contactService.deleteContact(id);
         if (!result) {
             return res.status(404).render('error', { message: 'Không tìm thấy liên hệ' });
         }
@@ -73,7 +78,8 @@ export const destroy = async (req, res, next) => {
 //createContact
 export const createContact = async (req, res, next) => {
     try {
-        const newContact = await ContactService.createContact(req.body);
+        const contactService = new ContactService(); // Tạo instance
+        const newContact = await contactService.createContact(req.body);
         res.status(201).json(newContact); // Trả về 201 Created và dữ liệu liên hệ mới
     } catch (error) {
         next(error); // Chuyển lỗi cho middleware xử lý lỗi

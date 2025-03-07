@@ -96,4 +96,4 @@ class MusicService {
     }
 }
 
-export default new MusicService();
+export default MusicService; // Sửa: Export class

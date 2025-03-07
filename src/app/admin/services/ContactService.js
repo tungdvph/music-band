@@ -57,7 +57,39 @@ class ContactService {
             throw new Error('Error deleting contact: ' + error.message);
         }
     }
-    // Thêm các phương thức khác nếu cần (ví dụ: searchContacts, filterContacts, ...)
+
+    async getContactStatusCounts() {
+        try {
+            const result = await Contact.aggregate([
+                {
+                    $group: {
+                        _id: "$status",
+                        count: { $sum: 1 }
+                    }
+                }
+            ]);
+
+            const statusCounts = {};
+            result.forEach(item => {
+                statusCounts[item._id] = item.count;
+            });
+
+            const allStatusCounts = {
+                'read': 0,
+                'unread': 0,
+            };
+
+            for (const status in statusCounts) {
+                if (allStatusCounts.hasOwnProperty(status)) {
+                    allStatusCounts[status] = statusCounts[status];
+                }
+            }
+            return allStatusCounts;
+
+        } catch (error) {
+            throw new Error('Lỗi khi lấy số lượng liên hệ theo trạng thái: ' + error.message);
+        }
+    }
 }
 
-export default new ContactService();
+export default ContactService; // Sửa: Export class

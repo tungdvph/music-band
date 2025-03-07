@@ -1,3 +1,4 @@
+// src/app/admin/routes/home.js
 import express from 'express';
 import * as homeController from '../controllers/HomeController.js';
 // import { requireLogin, requireAdmin } from '../../middleware/authMiddleware.js';

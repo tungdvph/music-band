@@ -1,11 +1,12 @@
 // src/app/admin/controllers/MusicController.js
-import AdminMusicService from '../services/MusicService.js';
+import MusicService from '../services/MusicService.js'; // Sửa import
 import { validationResult } from 'express-validator';
 import Song from '../../models/Song.js';
 
 export const index = async (req, res, next) => {
     try {
-        const songs = await AdminMusicService.getAllSongs();
+        const musicService = new MusicService(); // Tạo instance
+        const songs = await musicService.getAllSongs();
         res.render('music/index', { title: 'Quản lý bài hát', songs: songs, layout: 'admin' });
     } catch (error) {
         next(error);
@@ -14,7 +15,8 @@ export const index = async (req, res, next) => {
 
 export const show = async (req, res, next) => {
     try {
-        const song = await AdminMusicService.getSongBySlug(req.params.slug);
+        const musicService = new MusicService(); // Tạo instance
+        const song = await musicService.getSongBySlug(req.params.slug);
         if (!song) {
             return res.status(404).render('error', { message: 'Không tìm thấy bài hát' });
         }
@@ -39,7 +41,8 @@ export const store = async (req, res, next) => {
         });
     }
     try {
-        const newSong = await AdminMusicService.createSong(req.body, req); // Truyền req
+        const musicService = new MusicService(); // Tạo instance
+        const newSong = await musicService.createSong(req.body, req); // Truyền req
         res.redirect('/admin/music');
     } catch (error) {
         next(error)
@@ -48,7 +51,8 @@ export const store = async (req, res, next) => {
 
 export const edit = async (req, res, next) => {
     try {
-        const song = await AdminMusicService.getSongBySlug(req.params.slug);
+        const musicService = new MusicService(); // Tạo instance
+        const song = await musicService.getSongBySlug(req.params.slug);
         if (!song) {
             return res.status(404).render('error', { message: 'Không tìm thấy bài hát' });
         }
@@ -61,8 +65,9 @@ export const edit = async (req, res, next) => {
 export const update = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        // Lấy lại thông tin bài hát để hiển thị lại form với dữ liệu cũ
-        const song = await AdminMusicService.getSongBySlug(req.params.slug);
+        // Lấy lại thông tin bài hát để hiển thị lại form
+        const musicService = new MusicService(); // Phải có instance để gọi getSongBySlug
+        const song = await musicService.getSongBySlug(req.params.slug);
         return res.status(400).render('music/edit', {
             title: 'Chỉnh sửa bài hát',
             errors: errors.array(),
@@ -71,7 +76,8 @@ export const update = async (req, res, next) => {
         });
     }
     try {
-        const updatedSong = await AdminMusicService.updateSong(req.params.slug, req.body, req); // Truyền req
+        const musicService = new MusicService();  // Tạo instance
+        const updatedSong = await musicService.updateSong(req.params.slug, req.body, req); // Truyền req
         if (!updatedSong) {
             return res.status(404).render('error', { message: 'Không tìm thấy bài hát' });
         }
@@ -83,7 +89,8 @@ export const update = async (req, res, next) => {
 
 export const confirmDelete = async (req, res, next) => {
     try {
-        const song = await AdminMusicService.getSongBySlug(req.params.slug);
+        const musicService = new MusicService(); // Tạo instance
+        const song = await musicService.getSongBySlug(req.params.slug);
         if (!song) {
             return res.status(404).render('error', { message: 'Không tìm thấy bài hát.' })
         }
@@ -94,7 +101,8 @@ export const confirmDelete = async (req, res, next) => {
 }
 export const destroy = async (req, res, next) => {
     try {
-        const result = await AdminMusicService.deleteSong(req.params.slug);
+        const musicService = new MusicService(); // Tạo instance
+        const result = await musicService.deleteSong(req.params.slug);
         if (!result) {
             return res.status(404).render('error', { message: 'Không tìm thấy bài hát' })
         }
@@ -107,7 +115,8 @@ export const destroy = async (req, res, next) => {
 // Thêm hàm này:
 export const getSongsForClient = async (req, res) => {
     try {
-        const songs = await Song.find({}).select('title artist imageUrl audioUrl slug'); // Chỉ lấy các trường cần thiết
+        const musicService = new MusicService(); // Tạo instance
+        const songs = await musicService.getAllSongs(); // Sửa: Gọi qua instance
         res.json(songs);
     } catch (error) {
         console.error(error);

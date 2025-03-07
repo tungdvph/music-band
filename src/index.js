@@ -97,6 +97,9 @@ async function startServer() {
                     if (!date) return '';
                     return moment(date).format(format);
                 },
+                json: function (context) { // Thêm helper json
+                    return JSON.stringify(context);
+                }
             },
         });
 
